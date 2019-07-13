@@ -45,7 +45,6 @@ function createLight() {
 //Animate Function
 function animate(){
     requestAnimationFrame( animate );
-    cube.rotation.x +=0.1;
     renderer.render( scene, camera );
     
 }
