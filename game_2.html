@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>three.js webgl - shaders - ocean</title>
+		<meta charset="utf-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+		/>
+		<script src="Js/keyboard.js"></script>
+		<script src="Js/three.js"></script>
+		<script src="/Js/OrbitControls.js"></script>
+		<script src="/Js/Sky.js"></script>
+		<script src="Js/Water.js"></script>
+		<script src="Js/TDSLoader.js"></script>
+	</head>
+	<body>
+		<div id="container"></div>
+
+		<script type="module">
+
+
+			var container;
+			var camera, scene, renderer, light;
+			var controls, water, sphere;
+
+			////////
+			var geometry, cube, material;
+			var ship,ship2;
+			var finalship ,finalship2, bullet,bullet2;
+
+			var keyboard = new THREEx.KeyboardState();
+			var clock = new THREE.Clock();
+            var bGroup = new THREE.Group();
+            var bGroup2 = new THREE.Group();
+			//////
+
+
+			function update() {
+				var delta = clock.getDelta(); // seconds.
+				var moveDistance = 10 * delta; // 200 pixels per second
+				var rotateAngle = (Math.PI / 2) * delta;
+
+				if (keyboard.pressed("W")) finalship.translateZ(-moveDistance);
+				if (keyboard.pressed("S")) finalship.translateZ(moveDistance);
+				if (keyboard.pressed("Q")) finalship.translateX(-moveDistance);
+				if (keyboard.pressed("E")) finalship.translateX(moveDistance);
+				// rotate left/right/up/down
+				var rotation_matrix = new THREE.Matrix4().identity();
+				if (keyboard.pressed("A"))
+					finalship.rotateOnAxis(new THREE.Vector3(0, 1, 0), rotateAngle);
+				if (keyboard.pressed("D"))
+                    finalship.rotateOnAxis(new THREE.Vector3(0, 1, 0), -rotateAngle);
+                    
+
+                if (keyboard.pressed("I")) finalship2.translateZ(-moveDistance);
+				if (keyboard.pressed("K")) finalship2.translateZ(moveDistance);
+				if (keyboard.pressed("M")) finalship2.translateX(-moveDistance);
+				if (keyboard.pressed("N")) finalship2.translateX(moveDistance);
+				// rotate left/right/up/down
+				var rotation_matrix = new THREE.Matrix4().identity();
+				if (keyboard.pressed("J")){
+                   // ship2.rotateZ(rotateAngle);
+                   finalship2.rotateOnAxis(new THREE.Vector3(0, 1, 0), rotateAngle);
+                }
+				if (keyboard.pressed("L")){
+                    //ship2.rotateZ(-rotateAngle);  
+                    finalship2.rotateOnAxis(new THREE.Vector3(0, 1, 0), -rotateAngle);
+                }
+			}
+
+			//listeners
+			window.addEventListener("resize", onWindowResize, false);
+			
+
+			function onWindowResize() {
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize(window.innerWidth, window.innerHeight);
+			}
+
+			function init() {
+				//Selecting Game Container
+				container = document.getElementById("container");
+
+				//Setting Up WebGLRenderer
+				renderer = new THREE.WebGLRenderer();
+				renderer.setPixelRatio(window.devicePixelRatio);
+				renderer.setSize(window.innerWidth, window.innerHeight);
+				container.appendChild(renderer.domElement);
+
+				//Intailizing Scene
+				scene = new THREE.Scene();
+
+				//Setting Up Camera And Its postion
+				camera = new THREE.PerspectiveCamera(
+					70,
+					window.innerWidth / window.innerHeight,
+					1,
+					20000
+				);
+				camera.position.set(30, 30, 100);
+
+				//Setting Up Light
+				light = new THREE.DirectionalLight(0xffffff, 0.8);
+				scene.add(light);
+
+				// Water : Water Geometry
+				var waterGeometry = new THREE.PlaneBufferGeometry(10000, 10000);
+
+				water = new THREE.Water(waterGeometry, {
+					textureWidth: 512,
+					textureHeight: 512,
+					waterNormals: new THREE.TextureLoader().load(
+						"Js/waternormals.jpg",
+						function(texture) {
+							texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+						}
+					),
+					alpha: 1.0,
+					sunDirection: light.position.clone().normalize(),
+					sunColor: 0xffffff,
+					waterColor: 0x001e0f,
+					distortionScale: 3.7,
+					fog: scene.fog !== undefined
+				});
+
+				water.rotation.x = -Math.PI / 2;
+
+				scene.add(water); //Adding Water to Scene
+
+				// Skybox : Setting Up SkyBox
+				var sky = new THREE.Sky();
+				var uniforms = sky.material.uniforms;
+				uniforms["turbidity"].value = 10;
+				uniforms["rayleigh"].value = 2;
+				uniforms["luminance"].value = 1;
+				uniforms["mieCoefficient"].value = 0.005;
+				uniforms["mieDirectionalG"].value = 0.8;
+
+				var parameters = {
+					distance: 400,
+					inclination: 0.49,
+					azimuth: 0.205
+				};
+
+				var cubeCamera = new THREE.CubeCamera(0.1, 1, 512);
+				cubeCamera.renderTarget.texture.generateMipmaps = true;
+				cubeCamera.renderTarget.texture.minFilter =
+					THREE.LinearMipMapLinearFilter;
+
+				scene.background = cubeCamera.renderTarget;
+
+				function updateSun() {
+					var theta = Math.PI * (parameters.inclination - 0.5);
+					var phi = 2 * Math.PI  *(parameters.azimuth - 0.5);
+
+					light.position.x = parameters.distance * Math.cos(phi);
+					light.position.y =
+						parameters.distance * Math.sin(phi) * Math.sin(theta);
+					light.position.z =
+						parameters.distance * Math.sin(phi) * Math.cos(theta);
+
+					sky.material.uniforms["sunPosition"].value = light.position.copy(
+						light.position
+					);
+					water.material.uniforms["sunDirection"].value
+						.copy(light.position)
+						.normalize();
+
+					cubeCamera.update(renderer, sky);
+				}
+
+				updateSun();
+
+				//Bomb
+				var geometry = new THREE.SphereBufferGeometry(1, 32, 32);
+				var material = new THREE.MeshBasicMaterial({ color: 0xffff00 });
+				bullet = new THREE.Mesh(geometry, material);
+                bullet.position.set(8, 4, 0);
+                bullet2 =bullet.clone(); 
+                bullet2.position.set(-8, 4, 0);
+				// scene.add( sphere );
+
+				//FinalShip
+				finalship = new THREE.Group();
+                finalship.add(bullet);
+                finalship2 = new THREE.Group();
+                
+                
+
+				//3ds files dont store normal maps
+				var loader = new THREE.TextureLoader();
+				var normal = loader.load("./Objects/Galleon.jpg");
+				var loader = new THREE.TDSLoader();
+				loader.setResourcePath("Objects/");
+				loader.load("Objects/Galleon.3ds", function(object) {
+					object.traverse(function(child) {
+						if (child.isMesh) {
+							child.material.normalMap = normal;
+						}
+					});
+					ship = object; //local to global
+					ship.rotation.x = -Math.PI / 2; //back to front
+					ship.rotation.z = -Math.PI; //opposite direction
+					camera.position.z = ship.position.z + 60; //initial camera position
+                    finalship.add(ship);
+                    ship2=ship.clone();
+                    // ship2.position.set(40,0,0);
+
+                    bGroup2.add(bullet2);
+                    bGroup2.add(ship2);
+                    
+                    
+                    
+                    finalship2.add(bGroup2);
+                    finalship2.position.set(40,0,0);
+                    
+                    
+                });
+                   
+                
+                scene.add(finalship);
+                scene.add(finalship2);
+
+				//Orbit Controls
+				controls = new THREE.OrbitControls(camera, renderer.domElement);
+				controls.maxPolarAngle = Math.PI * 0.495;
+				controls.target.set(0, 10, 0);
+				controls.minDistance = 40.0;
+				controls.maxDistance = 200.0;
+				controls.update();
+
+				//
+			}
+
+			function animate() {
+				requestAnimationFrame(animate);
+				render();
+				update();
+			}
+
+			function render() {
+				var time = performance.now() * 0.001;
+				camera.position.y = Math.sin(time * 2) + 1 + 10;
+				water.material.uniforms["time"].value += 1.0 / 60.0;
+				renderer.render(scene, camera);
+			}
+
+			
+
+			
+
+			//Game Calling
+			init();
+			animate();
+		</script>
+	</body>
+</html>
