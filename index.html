@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Pirata+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/index.css">
+
+    <h1>Pirates of Caribbean</h1>
+
+</head>
+
+<body>
+
+    <div>
+        <button class="transparent_btn" id="upButton" onclick="myFunction()" onkeypress="enter()">SINGLE PLAYER</button>
+        <br><br><br>
+        <button class="transparent_btn1" id="downButton" onclick="myFunction()">MULTI PLAYER</button>
+
+    </div>
+
+    <script type="text/javascript">
+
+        //on mouse click
+        function myFunction() {
+            alert("PLAYER HAS BEEN SELECTED");
+        }
+
+        //enter key press
+        // $.fn.enter= function(){
+        function enter() {
+            var keycode = (event.keyCode ? event.keyCode : event.which);
+            if (keycode == '13') {
+                alert('You pressed a "enter" key ');
+            }
+        };
+
+
+
+
+    </script>
+
+</body>
+
+</html>
