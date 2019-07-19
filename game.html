@@ -12,7 +12,8 @@
     <script src="/Js/OrbitControls.js"></script>
     <script src="/Js/Sky.js"></script>
     <script src="Js/Water.js"></script>
-    <script src="Js/TDSLoader.js"></script>
+	<script src="Js/TDSLoader.js"></script>
+	<script src="Js/GLTFLoader.js"></script>
     <link rel="stylesheet" href="css/modal.css">
 
 </head>
@@ -44,15 +45,66 @@
         var controls, water, sphere;
 
         ////////
-        var geometry, cube, material;
-        var ship, ship2;
-        var finalship, finalship2, bullet, bullet2;
+        let geometry, cube, material;
+        let ship, ship2;
+		let finalship, finalship2, bullet, bullet2;
+		let shootbullet = false;
 
-        var keyboard = new THREEx.KeyboardState();
-        var clock = new THREE.Clock();
-        var bGroup = new THREE.Group();
-        var bGroup2 = new THREE.Group();
-        //////
+        let keyboard = new THREEx.KeyboardState();
+        let clock = new THREE.Clock();
+        let bGroup = new THREE.Group();
+		let bGroup2 = new THREE.Group();
+		let pos,shootbomb,master_shootbomb;
+		let yTrue= true , zTrue= false;
+		//////
+		
+        window.addEventListener("keydown", onKeyDown, false);
+    
+			function onKeyDown(e) {
+				console.log(e);
+				if(e.keyCode == 32){//space bar
+					if(shootbomb){
+						scene.remove(shootbomb);
+					}
+
+					
+			      shootbullet = true;//trigger bullet
+		   
+                  if(master_shootbomb){
+					  
+					  shootbomb=master_shootbomb.clone();
+					  shootbomb.scale.x = 5 ; //scaling x
+					  shootbomb.scale.y = 5;  //scaling y
+					  shootbomb.scale.z = 5;  //scling y
+					  shootbomb.rotation.y=finalship.rotation.y
+					  console.log("hi");
+				  }
+
+                
+			
+			// if(finalship.rotation.y < 0){
+			// 	console.log(finalship.rotation.y-0.01);
+			// 	var previous = finalship.rotation.y-0.01;
+			// 	var current = finalship.rotation.y;
+			// 	if(previous<current)
+			// 	shootbomb.rotation.y=finalship.rotation.y;
+			// 	else{
+			// 		shootbomb.rotation.y=finalship.rotation.y+Math.PI;
+			// 		alert("Hi");
+			// 	}
+				
+			
+
+			// }
+			
+			else{
+				zTrue=true;
+				console.log(finalship.rotation.z)
+			}
+			
+				}
+
+			}
 
 
         function update() {
@@ -76,13 +128,23 @@
             // rotate left/right/up/down
             var rotation_matrix = new THREE.Matrix4().identity();
             if (keyboard.pressed("J")) {
-                // ship2.rotateZ(rotateAngle);
+                
                 finalship2.rotateOnAxis(new THREE.Vector3(0, 1, 0), rotateAngle);
             }
-            if (keyboard.pressed("L")) {
-                //ship2.rotateZ(-rotateAngle);  
+            if (keyboard.pressed("L")) { 
                 finalship2.rotateOnAxis(new THREE.Vector3(0, 1, 0), -rotateAngle);
-            }
+			}
+           
+	
+			//if player1 shoot bullet
+			if(shootbullet){
+		   
+			scene.add(shootbomb);
+			if(shootbomb)
+			shootbomb.translateX(moveDistance*6)
+			
+				
+			}
         }
 
         //listeners
@@ -97,6 +159,26 @@
         }
 
         function init() {
+
+             
+		   var loader = new THREE.GLTFLoader();
+						loader.load( '/bomb/scene.gltf' , function ( gltf ) {
+							gltf.scene.traverse( function ( child ) {
+								 child.rotateOnAxis(new THREE.Vector3(0, 1, 0), -Math.PI/2);
+								 master_shootbomb= new THREE.Group();
+								 master_shootbomb.add(child);
+								 master_shootbomb.position.x= finalship.position.x;
+								 master_shootbomb.position.z= finalship.position.z;
+								 master_shootbomb.position.y=4;
+								 
+								 
+								scene.add( master_shootbomb );
+
+							} );
+							
+			   } );
+
+
             //Selecting Game Container
             container = document.getElementById("container");
 
@@ -157,7 +239,7 @@
 
             var parameters = {
                 distance: 400,
-                inclination: 0.49,
+                inclination: 0.34,
                 azimuth: 0.205
             };
 
@@ -197,11 +279,13 @@
             bullet.position.set(8, 4, 0);
             bullet2 = bullet.clone();
             bullet2.position.set(-8, 4, 0);
-            // scene.add( sphere );
+			// scene.add( sphere );
+			
+			
 
             //FinalShip
             finalship = new THREE.Group();
-            finalship.add(bullet);
+           
             finalship2 = new THREE.Group();
 
 
@@ -225,7 +309,7 @@
                 ship2 = ship.clone();
                 // ship2.position.set(40,0,0);
 
-                bGroup2.add(bullet2);
+                
                 bGroup2.add(ship2);
 
 
@@ -248,7 +332,7 @@
             controls.maxDistance = 200.0;
             controls.update();
 
-            //
+            
         }
 
         function animate() {
@@ -258,6 +342,7 @@
         }
 
         function render() {
+			
             var time = performance.now() * 0.001;
             camera.position.y = Math.sin(time * 2) + 1 + 10;
             water.material.uniforms["time"].value += 1.0 / 60.0;
