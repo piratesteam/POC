@@ -27,11 +27,13 @@
     <div id="openModal" class="modalDialog">
         <div> <a href="#close" title="Close" class="close">X</a>
 
-            <h2>Modal Box</h2>
+            <h1><br>Help</br></h1>
 
-            <p>This is a sample modal box that can be created using the powers of CSS3.</p>
-            <p>You could do a lot of things here like have a pop-up ad that shows when your website loads, or create a
-                login/register form for users.</p>
+            <h2>Player1 Control</h2>
+			<p> Use W/A/S/D for  movement </p>
+			<p>Space to shoot missile</p><br>
+			<h2>Player2 Control</h2>
+            <p> Use I/J/K/L for  movement </p>
         </div>
     </div>
 
@@ -39,6 +41,7 @@
 
     <script type="module">
 
+        var forward=true;
 
         var container;
         var camera, scene, renderer, light;
@@ -61,7 +64,7 @@
         window.addEventListener("keydown", onKeyDown, false);
     
 			function onKeyDown(e) {
-				console.log(e);
+				
 				if(e.keyCode == 32){//space bar
 					if(shootbomb){
 						scene.remove(shootbomb);
@@ -69,16 +72,36 @@
 
 					
 			      shootbullet = true;//trigger bullet
+                
+                  
+                  console.log("Y:"+finalship.rotation.y);
+                  console.log("Z:"+finalship.rotation.z);
+
 		   
                   if(master_shootbomb){
-					  
+                    if(finalship.rotation.z != 0){
+                        var roatatedbullet =master_shootbomb.clone(); 
+                        roatatedbullet.rotateOnAxis(new THREE.Vector3(0, 1, 0), -Math.PI);
+                        shootbomb= new THREE.Group();
+						shootbomb.add(roatatedbullet);
+                    }else{
 					  shootbomb=master_shootbomb.clone();
-					  shootbomb.scale.x = 5 ; //scaling x
-					  shootbomb.scale.y = 5;  //scaling y
-					  shootbomb.scale.z = 5;  //scling y
+                    }
+					  
+					  shootbomb.position.x= finalship.position.x;
+					  shootbomb.position.z= finalship.position.z;
+					  shootbomb.position.y=4;
 					  shootbomb.rotation.y=finalship.rotation.y
-					  console.log("hi");
+					 
 				  }
+                  if(finalship.rotation.z == 0){
+                  shootbomb.rotation.y=finalship.rotation.y;
+                  forward=true;
+                  }
+                  else{
+                  shootbomb.rotation.y*=-1;
+                  forward=false;
+                  }
 
                 
 			
@@ -97,10 +120,7 @@
 
 			// }
 			
-			else{
-				zTrue=true;
-				console.log(finalship.rotation.z)
-			}
+			
 			
 				}
 
@@ -138,13 +158,17 @@
 	
 			//if player1 shoot bullet
 			if(shootbullet){
-		   
 			scene.add(shootbomb);
 			if(shootbomb)
+             if(forward)
 			shootbomb.translateX(moveDistance*6)
-			
-				
+	        else{
+             shootbomb.translateX(-moveDistance*6)  
+            }
 			}
+            
+
+			
         }
 
         //listeners
@@ -167,12 +191,13 @@
 								 child.rotateOnAxis(new THREE.Vector3(0, 1, 0), -Math.PI/2);
 								 master_shootbomb= new THREE.Group();
 								 master_shootbomb.add(child);
-								 master_shootbomb.position.x= finalship.position.x;
-								 master_shootbomb.position.z= finalship.position.z;
-								 master_shootbomb.position.y=4;
+								 master_shootbomb.scale.x = 5 ; //scaling x
+                                 master_shootbomb.scale.y = 5;  //scaling y
+                                 master_shootbomb.scale.z = 5;  //scling y
 								 
 								 
-								scene.add( master_shootbomb );
+								// scene.add( master_shootbomb );
+								finalship.add(master_shootbomb)
 
 							} );
 							
