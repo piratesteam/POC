@@ -12,8 +12,9 @@
     <script src="/Js/OrbitControls.js"></script>
     <script src="/Js/Sky.js"></script>
     <script src="Js/Water.js"></script>
-	<script src="Js/TDSLoader.js"></script>
-	<script src="Js/GLTFLoader.js"></script>
+    <script src="Js/TDSLoader.js"></script>
+    <script src="Js/GLTFLoader.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="css/modal.css">
 
 </head>
@@ -30,10 +31,10 @@
             <h1><br>Help</br></h1>
 
             <h2>Player1 Control</h2>
-			<p> Use W/A/S/D for  movement </p>
-			<p>Space to shoot missile</p><br>
-			<h2>Player2 Control</h2>
-            <p> Use I/J/K/L for  movement </p>
+            <p> Use W/A/S/D for movement </p>
+            <p>Space to shoot missile</p><br>
+            <h2>Player2 Control</h2>
+            <p> Use I/J/K/L for movement </p>
         </div>
     </div>
 
@@ -43,64 +44,71 @@
 
 let container, camera, scene, renderer, light, controls, water, sphere, geometry, cube,
     material, ship, ship2, finalship, finalship2, bullet, bullet2, shootbullet = false,
-    pos, shootbomb, master_shootbomb;
+    pos, shootbomb, master_shootbomb, bullets = [],
+    meshArray = [],
+    shark, mountain, objects = [],
+    intersects, time, delta, moveDistance, rotateAngle, rotation_matrix, loader, loader2, loader3,
+    loader4, loader5,loader6,loader7, waterGeometry, sky, uniforms, parameters, cubeCamera, theta, phi, normal;
 
 
 let keyboard = new THREEx.KeyboardState();
 let clock = new THREE.Clock();
-let bGroup = new THREE.Group();
 let bGroup2 = new THREE.Group();
+let raycaster = new THREE.Raycaster();
+let pivotPoint = new THREE.Object3D();
+let direction = new THREE.Vector3();
+let far = new THREE.Vector3();
 
 
 window.addEventListener("keydown", onKeyDown, false);
 
 function onKeyDown(e) {
-    console.log(e);
+
     if (e.keyCode == 32) { //space bar
-        if (shootbomb) {
-            scene.remove(shootbomb);
-        }
 
-
-        shootbullet = true; //trigger bullet
 
         if (master_shootbomb) {
 
             shootbomb = master_shootbomb.clone();
-            shootbomb.scale.x = 5; //scaling x
-            shootbomb.scale.y = 5; //scaling y
-            shootbomb.scale.z = 5; //scaling y
-
-
-            shootbomb.position.x = finalship.position.x;
-            shootbomb.position.z = finalship.position.z;
-            shootbomb.position.y = 4;
-
-            if (finalship.rotation.z == 0)
-                shootbomb.rotation.y = finalship.rotation.y;
-            else
-                shootbomb.rotation.y = -finalship.rotation.y + Math.PI;
-
 
         }
 
+        shootbullet = true;
 
+        scene.add(shootbomb);
+        scene.updateMatrixWorld(true);
+
+
+        shootbomb.scale.x = 5; //scaling x
+        shootbomb.scale.y = 5; //scaling y
+        shootbomb.scale.z = 5; //scaling y
+
+
+        shootbomb.position.x = finalship.position.x;
+        shootbomb.position.z = finalship.position.z;
+        shootbomb.position.y = 4;
+
+        if (finalship.rotation.z == 0)
+            shootbomb.rotation.y = finalship.rotation.y;
+        else
+            shootbomb.rotation.y = -finalship.rotation.y + Math.PI;
+
+        bullets.push(shootbomb);
 
 
     }
 
 }
 
-
 function update() {
-    var delta = clock.getDelta(); // seconds.
-    var moveDistance = 8 * delta; // 200 pixels per second
-    var rotateAngle = (Math.PI / 2) * delta / 8;
+    delta = clock.getDelta(); // seconds.
+    moveDistance = 8 * delta; // 200 pixels per second
+    rotateAngle = (Math.PI / 2) * delta / 8;
 
     if (keyboard.pressed("W")) finalship.translateZ(-moveDistance);
     if (keyboard.pressed("S")) finalship.translateZ(moveDistance);
     // rotate left/right/up/down
-    var rotation_matrix = new THREE.Matrix4().identity();
+    rotation_matrix = new THREE.Matrix4().identity();
     if (keyboard.pressed("A"))
         finalship.rotateOnAxis(new THREE.Vector3(0, 1, 0), rotateAngle);
     if (keyboard.pressed("D"))
@@ -111,7 +119,7 @@ function update() {
     if (keyboard.pressed("K")) finalship2.translateZ(moveDistance);
 
     // rotate left/right/up/down
-    var rotation_matrix = new THREE.Matrix4().identity();
+    rotation_matrix = new THREE.Matrix4().identity();
     if (keyboard.pressed("J")) {
 
         finalship2.rotateOnAxis(new THREE.Vector3(0, 1, 0), rotateAngle);
@@ -121,16 +129,44 @@ function update() {
     }
 
 
-    //if player1 shoot bullet
-    if (shootbullet) {
-        scene.add(shootbomb);
-        if (shootbomb)
-            shootbomb.translateX(moveDistance * 6)
 
+
+    bullets.forEach(function(shootbomb, index) {
+        if (shootbomb) {
+            if (shootbullet == false) {
+                console.log("hi");
+                bullets.splice(index, 1);
+
+            } else {
+                shootbomb.translateX(moveDistance * 6);
+            }
+        }
+    });
+
+    if(master_shootbomb && shootbomb){
+    raycaster.set(shootbomb.position, direction.subVectors(master_shootbomb.position, shootbomb.position).normalize());
+    raycaster.far = far.subVectors(master_shootbomb.position, shootbomb.position).length();
+    console.log(raycaster.far);
+    // comment this line to have an infinite ray
+    intersects = raycaster.intersectObjects(meshArray);
+    if(intersects.length>0){
+    ship2.rotation.y=Math.PI;
+    scene.remove(shootbomb);
     }
+    console.log(intersects);
+    for (let i = 0; i < intersects.length; i++) {
+    console.log(intersects[i].object);
 
 
 }
+
+}
+}
+
+
+
+
+
 
 //listeners
 window.addEventListener("resize", onWindowResize, false);
@@ -145,22 +181,50 @@ function onWindowResize() {
 
 function init() {
 
-
-    var loader = new THREE.GLTFLoader();
+    loader = new THREE.GLTFLoader();
     loader.load('/bomb/scene.gltf', function(gltf) {
         gltf.scene.traverse(function(child) {
             child.rotateOnAxis(new THREE.Vector3(0, 1, 0), -Math.PI / 2);
             master_shootbomb = new THREE.Group();
             master_shootbomb.add(child);
-            //  master_shootbomb.position.y=40;
-
-
             scene.add(master_shootbomb);
-            // finalship.add(master_shootbomb)
 
         });
 
     });
+
+    loader2 = new THREE.GLTFLoader();
+    loader2.load('/compass/scene.gltf', function(gltf) {
+
+
+        gltf.scene.scale.x = 0.1;
+        gltf.scene.scale.y = 0.1;
+        gltf.scene.scale.z = 0.1;
+        gltf.scene.position.set(-180, 5, -100);
+        gltf.scene.rotation.x = 0;
+        gltf.scene.rotation.y = 1050;
+        scene.add(gltf.scene);
+
+
+
+
+    });
+
+
+    loader3 = new THREE.GLTFLoader();
+    loader3.load('/shark/scene.gltf', function(gltf) {
+
+
+        gltf.scene.scale.x = 5;
+        gltf.scene.scale.y = 5;
+        gltf.scene.scale.z = 5;
+        gltf.scene.position.set(-40, 1.5, 0);
+        shark = gltf.scene;
+        pivotPoint.add(shark);
+        scene.add(pivotPoint);
+
+    });
+
 
 
     //Selecting Game Container
@@ -177,19 +241,20 @@ function init() {
 
     //Setting Up Camera And Its postion
     camera = new THREE.PerspectiveCamera(
-        70,
+        90,
         window.innerWidth / window.innerHeight,
         1,
         20000
     );
-    camera.position.set(30, 30, 100);
+    camera.position.set(30, 0, 150);
+
 
     //Setting Up Light
-    light = new THREE.DirectionalLight(0xffffff, 0.8);
+    light = new THREE.HemisphereLight(0xffffbb, 0x080820, 1);
     scene.add(light);
 
     // Water : Water Geometry
-    var waterGeometry = new THREE.PlaneBufferGeometry(10000, 10000);
+    waterGeometry = new THREE.PlaneBufferGeometry(10000, 10000);
 
     water = new THREE.Water(waterGeometry, {
         textureWidth: 512,
@@ -213,21 +278,22 @@ function init() {
     scene.add(water); //Adding Water to Scene
 
     // Skybox : Setting Up SkyBox
-    var sky = new THREE.Sky();
-    var uniforms = sky.material.uniforms;
+    sky = new THREE.Sky();
+    uniforms = sky.material.uniforms;
     uniforms["turbidity"].value = 10;
     uniforms["rayleigh"].value = 2;
     uniforms["luminance"].value = 1;
     uniforms["mieCoefficient"].value = 0.005;
     uniforms["mieDirectionalG"].value = 0.8;
 
-    var parameters = {
-        distance: 400,
-        inclination: 0.34,
-        azimuth: 0.205
+    parameters = {
+        distance: 100,
+        inclination: 0.8,
+        azimuth: -0.3
+
     };
 
-    var cubeCamera = new THREE.CubeCamera(0.1, 1, 512);
+    cubeCamera = new THREE.CubeCamera(0.1, 1, 512);
     cubeCamera.renderTarget.texture.generateMipmaps = true;
     cubeCamera.renderTarget.texture.minFilter =
         THREE.LinearMipMapLinearFilter;
@@ -235,8 +301,8 @@ function init() {
     scene.background = cubeCamera.renderTarget;
 
     function updateSun() {
-        var theta = Math.PI * (parameters.inclination - 0.5);
-        var phi = 2 * Math.PI * (parameters.azimuth - 0.5);
+        theta = Math.PI * (parameters.inclination - 0.5);
+        phi = 2 * Math.PI * (parameters.azimuth - 0.5);
 
         light.position.x = parameters.distance * Math.cos(phi);
         light.position.y =
@@ -262,38 +328,61 @@ function init() {
     finalship2 = new THREE.Group();
 
     //3ds files dont store normal maps
-    var loader = new THREE.TextureLoader();
-    var normal = loader.load("./Objects/Galleon.jpg");
-    var loader = new THREE.TDSLoader();
-    loader.setResourcePath("Objects/");
-    loader.load("Objects/Galleon.3ds", function(object) {
+    loader4 = new THREE.TextureLoader();
+    normal = loader4.load("./Objects/Galleon.jpg");
+    loader5 = new THREE.TDSLoader();
+    loader5.setResourcePath("Objects/");
+    loader5.load("Objects/Galleon.3ds", function(object) {
         object.traverse(function(child) {
             if (child.isMesh) {
+              
                 child.material.normalMap = normal;
             }
         });
+
+       
+
         ship = object; //local to global
         ship.rotation.x = -Math.PI / 2; //back to front
         ship.rotation.z = -Math.PI; //opposite direction
         camera.position.z = ship.position.z + 60; //initial camera position
         finalship.add(ship);
-        ship2 = ship.clone();
+        finalship.add(pivotPoint);
 
 
+    });
 
+    loader6 = new THREE.TextureLoader();
+    normal = loader6.load("./Objects/Galleon.jpg");
+    loader7 = new THREE.TDSLoader();
+    loader7.setResourcePath("Objects/");
+    loader7.load("Objects/Galleon.3ds", function(object) {
+        object.traverse(function(child) {
+            if (child.isMesh) {
+              meshArray.push(child);
+                child.material.normalMap = normal;
+            }
+        });
+
+       
+
+        ship2 = object; //local to global
+        ship2.rotation.x = -Math.PI / 2; //back to front
+        ship2.rotation.z = -Math.PI; //opposite direction
+        camera.position.z = ship.position.z + 60; //initial camera position
         bGroup2.add(ship2);
-
-
-
         finalship2.add(bGroup2);
-        finalship2.position.set(40, 0, 0);
+        finalship2.position.set(50, 0, 0);
 
 
     });
 
 
+
     scene.add(finalship);
     scene.add(finalship2);
+
+
 
     //Orbit Controls
     controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -302,6 +391,8 @@ function init() {
     controls.minDistance = 40.0;
     controls.maxDistance = 200.0;
     controls.update();
+
+
 
 
 }
@@ -314,18 +405,19 @@ function animate() {
 
 function render() {
 
-    var time = performance.now() * 0.001;
+    pivotPoint.position.set(finalship.position.x, finalship.position.y, finalship.position.z)
+    pivotPoint.rotation.y += 0.01;
+    time = performance.now() * 0.001;
     camera.position.y = Math.sin(time * 2) + 1 + 10;
     water.material.uniforms["time"].value += 1.0 / 60.0;
     renderer.render(scene, camera);
 }
 
-
-
-
 //Game Calling
 init();
 animate();
+
+
     </script>
 </body>
 
