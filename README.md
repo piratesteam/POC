@@ -1,3 +1,24 @@
+# Pirates of Carribbean
+
+## Table of contents
+* [Game Description](#game-description)
+* [Requirement Specification](#requirement-specification)
+* [Application](#application)
+* [Design Schema](#design-schema)
+* [Technologies](#technologies)
+* [User Interface](#user-interface)
+* [Contributors](#contributors)
+* [References](#references)
+* [Source Code Link](#sourcecode-link)
+
+## General info
+This project is simple Lorem ipsum dolor generator.
+	
+## Technologies
+Project is created with:
+* Lorem version: 12.3
+* Ipsum version: 2.33
+* Ament library version: 999
 ## Technology Used
 Threejs, Javascript , HTML , CSS , Firebase
 
