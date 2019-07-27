@@ -2,11 +2,12 @@
 <html lang="en">
 
 <head>
-    <title>three.js webgl - shaders - ocean</title>
+    <title>POC</title>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
-    <link rel="stylesheet" href="css/reset.css">
+    <meta name="viewport" content="width=device-width, 
+    user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
+    <link rel="stylesheet" href="css/reset.css">
     <script src="Js/keyboard.js"></script>
     <script src="Js/three.js"></script>
     <script src="/Js/OrbitControls.js"></script>
@@ -14,7 +15,11 @@
     <script src="Js/Water.js"></script>
     <script src="Js/TDSLoader.js"></script>
     <script src="Js/GLTFLoader.js"></script>
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="Js/Detector.js"></script>
+    <script src="Js/THREEx.WindowResize.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" 
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" 
+    crossorigin="anonymous"></script>
     <link rel="stylesheet" href="css/modal.css">
 
 </head>
@@ -27,9 +32,7 @@
 
     <div id="openModal" class="modalDialog">
         <div> <a href="#close" title="Close" class="close">X</a>
-
             <h1><br>Help</br></h1>
-
             <h2>Player1 Control</h2>
             <p> Use W/A/S/D for movement </p>
             <p>Space to shoot missile</p><br>
@@ -43,211 +46,58 @@
     <script type="module">
 
 let container, camera, scene, renderer, light, controls, water, sphere, geometry, cube,
-    material, ship, ship2, finalship, finalship2, bullet, bullet2, shootbullet = false,
-    pos, shootbomb, master_shootbomb, bullets = [],
-    meshArray = [],
-    shark, mountain, objects = [],
-    intersects, time, delta, moveDistance, rotateAngle, rotation_matrix, loader, loader2, loader3,
-    loader4, loader5,loader6,loader7, waterGeometry, sky, uniforms, parameters, cubeCamera, theta, phi, normal;
-
+    material, ship, ship2, shootbullet = false,
+    shootbomb, master_shootbomb, meshArray = [],
+    shark, intersects, time, delta, moveDistance, rotateAngle, rotation_matrix, loader, waterGeometry,
+    sky, uniforms, parameters, cubeCamera, theta, phi, normal, position, shark2, relativeCameraOffset,
+    cameraOffset, topCamera, SCREEN_HEIGHT, SCREEN_WIDTH, ASPECT, VIEW_ANGLE, NEAR, FAR;
 
 let keyboard = new THREEx.KeyboardState();
 let clock = new THREE.Clock();
 let bGroup2 = new THREE.Group();
 let raycaster = new THREE.Raycaster();
 let pivotPoint = new THREE.Object3D();
+let pivotPoint2 = new THREE.Object3D();
 let direction = new THREE.Vector3();
 let far = new THREE.Vector3();
+let finalship = new THREE.Group();
+let finalship2 = new THREE.Group();
 
-
-window.addEventListener("keydown", onKeyDown, false);
-
-function onKeyDown(e) {
-
-    if (e.keyCode == 32) { //space bar
-
-
-        if (master_shootbomb) {
-
-            shootbomb = master_shootbomb.clone();
-
-        }
-
-        shootbullet = true;
-
-        scene.add(shootbomb);
-        scene.updateMatrixWorld(true);
-
-
-        shootbomb.scale.x = 5; //scaling x
-        shootbomb.scale.y = 5; //scaling y
-        shootbomb.scale.z = 5; //scaling y
-
-
-        shootbomb.position.x = finalship.position.x;
-        shootbomb.position.z = finalship.position.z;
-        shootbomb.position.y = 4;
-
-        if (finalship.rotation.z == 0)
-            shootbomb.rotation.y = finalship.rotation.y;
-        else
-            shootbomb.rotation.y = -finalship.rotation.y + Math.PI;
-
-        bullets.push(shootbomb);
-
-
-    }
-
-}
-
-function update() {
-    delta = clock.getDelta(); // seconds.
-    moveDistance = 8 * delta; // 200 pixels per second
-    rotateAngle = (Math.PI / 2) * delta / 8;
-
-    if (keyboard.pressed("W")) finalship.translateZ(-moveDistance);
-    if (keyboard.pressed("S")) finalship.translateZ(moveDistance);
-    // rotate left/right/up/down
-    rotation_matrix = new THREE.Matrix4().identity();
-    if (keyboard.pressed("A"))
-        finalship.rotateOnAxis(new THREE.Vector3(0, 1, 0), rotateAngle);
-    if (keyboard.pressed("D"))
-        finalship.rotateOnAxis(new THREE.Vector3(0, 1, 0), -rotateAngle);
-
-
-    if (keyboard.pressed("I")) finalship2.translateZ(-moveDistance);
-    if (keyboard.pressed("K")) finalship2.translateZ(moveDistance);
-
-    // rotate left/right/up/down
-    rotation_matrix = new THREE.Matrix4().identity();
-    if (keyboard.pressed("J")) {
-
-        finalship2.rotateOnAxis(new THREE.Vector3(0, 1, 0), rotateAngle);
-    }
-    if (keyboard.pressed("L")) {
-        finalship2.rotateOnAxis(new THREE.Vector3(0, 1, 0), -rotateAngle);
-    }
-
-
-
-
-    bullets.forEach(function(shootbomb, index) {
-        if (shootbomb) {
-            if (shootbullet == false) {
-                console.log("hi");
-                bullets.splice(index, 1);
-
-            } else {
-                shootbomb.translateX(moveDistance * 6);
-            }
-        }
-    });
-
-    if(master_shootbomb && shootbomb){
-    raycaster.set(shootbomb.position, direction.subVectors(master_shootbomb.position, shootbomb.position).normalize());
-    raycaster.far = far.subVectors(master_shootbomb.position, shootbomb.position).length();
-    console.log(raycaster.far);
-    // comment this line to have an infinite ray
-    intersects = raycaster.intersectObjects(meshArray);
-    if(intersects.length>0){
-    ship2.rotation.y=Math.PI;
-    scene.remove(shootbomb);
-    }
-    console.log(intersects);
-    for (let i = 0; i < intersects.length; i++) {
-    console.log(intersects[i].object);
-
-
-}
-
-}
-}
-
-
-
-
-
-
-//listeners
-window.addEventListener("resize", onWindowResize, false);
-
-
-function onWindowResize() {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-
-    renderer.setSize(window.innerWidth, window.innerHeight);
-}
-
+//Initialization
 function init() {
-
-    loader = new THREE.GLTFLoader();
-    loader.load('/bomb/scene.gltf', function(gltf) {
-        gltf.scene.traverse(function(child) {
-            child.rotateOnAxis(new THREE.Vector3(0, 1, 0), -Math.PI / 2);
-            master_shootbomb = new THREE.Group();
-            master_shootbomb.add(child);
-            scene.add(master_shootbomb);
-
-        });
-
-    });
-
-    loader2 = new THREE.GLTFLoader();
-    loader2.load('/compass/scene.gltf', function(gltf) {
-
-
-        gltf.scene.scale.x = 0.1;
-        gltf.scene.scale.y = 0.1;
-        gltf.scene.scale.z = 0.1;
-        gltf.scene.position.set(-180, 5, -100);
-        gltf.scene.rotation.x = 0;
-        gltf.scene.rotation.y = 1050;
-        scene.add(gltf.scene);
-
-
-
-
-    });
-
-
-    loader3 = new THREE.GLTFLoader();
-    loader3.load('/shark/scene.gltf', function(gltf) {
-
-
-        gltf.scene.scale.x = 5;
-        gltf.scene.scale.y = 5;
-        gltf.scene.scale.z = 5;
-        gltf.scene.position.set(-40, 1.5, 0);
-        shark = gltf.scene;
-        pivotPoint.add(shark);
-        scene.add(pivotPoint);
-
-    });
-
-
-
-    //Selecting Game Container
-    container = document.getElementById("container");
-
-    //Setting Up WebGLRenderer
-    renderer = new THREE.WebGLRenderer();
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    container.appendChild(renderer.domElement);
 
     //Intailizing Scene
     scene = new THREE.Scene();
 
     //Setting Up Camera And Its postion
-    camera = new THREE.PerspectiveCamera(
-        90,
-        window.innerWidth / window.innerHeight,
-        1,
-        20000
-    );
-    camera.position.set(30, 0, 150);
 
+    SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
+    VIEW_ANGLE = 90, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 20000;
+
+    //Camera 1
+    camera = new THREE.PerspectiveCamera(120, ASPECT, NEAR, FAR);
+    scene.add(camera);
+
+    //Camera 2
+    topCamera = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
+    scene.add(topCamera);
+    topCamera.position.set(-30, 20, 0);
+    topCamera.lookAt(scene.position);
+
+    //Detecting WebGL
+    if (Detector.webgl)
+        renderer = new THREE.WebGLRenderer({
+            antialias: true
+        });
+    else
+        renderer = new THREE.CanvasRenderer();
+
+    //Setting Renderer
+    renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+    container = document.getElementById('container');
+    container.appendChild(renderer.domElement);
+    THREEx.WindowResize(renderer, topCamera);
+    THREEx.WindowResize(renderer, camera);
 
     //Setting Up Light
     light = new THREE.HemisphereLight(0xffffbb, 0x080820, 1);
@@ -274,8 +124,7 @@ function init() {
     });
 
     water.rotation.x = -Math.PI / 2;
-
-    scene.add(water); //Adding Water to Scene
+    scene.add(water);
 
     // Skybox : Setting Up SkyBox
     sky = new THREE.Sky();
@@ -292,13 +141,238 @@ function init() {
         azimuth: -0.3
 
     };
-
     cubeCamera = new THREE.CubeCamera(0.1, 1, 512);
     cubeCamera.renderTarget.texture.generateMipmaps = true;
-    cubeCamera.renderTarget.texture.minFilter =
-        THREE.LinearMipMapLinearFilter;
-
+    cubeCamera.renderTarget.texture.minFilter = THREE.LinearMipMapLinearFilter;
     scene.background = cubeCamera.renderTarget;
+
+    //Initializing Models
+
+    //Bomb
+    loader = new THREE.GLTFLoader();
+    loader.load('models/bomb/scene.gltf', function(gltf) {
+        gltf.scene.traverse(function(child) {
+            child.rotateOnAxis(new THREE.Vector3(0, 1, 0), -Math.PI / 2);
+            master_shootbomb = new THREE.Group();
+            master_shootbomb.add(child);
+            scene.add(master_shootbomb);
+
+        });
+
+    });
+
+    //Shark
+    loader = new THREE.GLTFLoader();
+    loader.load('models/shark/scene.gltf', function(gltf) {
+
+        gltf.scene.scale.x = 5;
+        gltf.scene.scale.y = 5;
+        gltf.scene.scale.z = 5;
+        gltf.scene.position.set(-40, 1.5, 0);
+        shark = gltf.scene;
+        pivotPoint.add(shark);
+        scene.add(pivotPoint);
+
+    });
+
+    //Shark 2 
+    loader = new THREE.GLTFLoader();
+    loader.load('models/shark2/scene.gltf', function(gltf) {
+        gltf.scene.scale.x = 0.2;
+        gltf.scene.scale.y = 0.2;
+        gltf.scene.scale.z = 0.2;
+        gltf.scene.position.set(40, 1.5, 0);
+        shark2 = gltf.scene;
+        shark2.rotation.x = -6;
+        pivotPoint2.add(shark2);
+        scene.add(pivotPoint2);
+
+    });
+
+    //Ship 1
+    loader = new THREE.TextureLoader();
+    normal = loader.load("./models/ship/Galleon.jpg");
+    loader = new THREE.TDSLoader();
+    loader.setResourcePath("Objects/");
+    loader.load("models/ship/Galleon.3ds", function(object) {
+        object.traverse(function(child) {
+            if (child.isMesh) {
+
+                child.material.normalMap = normal;
+            }
+        });
+        ship = object; //local to global
+        ship.rotation.x = -Math.PI / 2; //back to front
+        ship.rotation.z = -Math.PI; //opposite direction
+        camera.position.z = ship.position.z + 60; //initial camera position
+        finalship.add(ship);
+        finalship.add(pivotPoint);
+    });
+
+    //Ship 2
+    loader = new THREE.TextureLoader();
+    normal = loader.load("./models/ship/Galleon.jpg");
+    loader = new THREE.TDSLoader();
+    loader.setResourcePath("Objects/");
+    loader.load("models/ship/Galleon.3ds", function(object) {
+        object.traverse(function(child) {
+            if (child.isMesh) {
+                meshArray.push(child);
+                child.material.normalMap = normal;
+            }
+        });
+        ship2 = object; //local to global
+        ship2.rotation.x = -Math.PI / 2; //back to front
+        ship2.rotation.z = -Math.PI; //opposite direction
+
+        camera.position.z = ship.position.z + 60; //initial camera position
+        bGroup2.add(ship2);
+        finalship2.add(bGroup2);
+        finalship2.add(pivotPoint2);
+        finalship2.position.set(60, 0, 0);
+    });
+
+    //Adding Ships to scene
+    scene.add(finalship);
+    scene.add(finalship2);
+
+    //Setting Renderer
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.autoClear = false;
+}
+
+//Shoot Bullet
+function onKeyDown(e) {
+
+    if (e.keyCode == 32) { //space bar
+
+        if (shootbullet) {
+
+            setTimeout(() => {
+                shootbullet = false;
+                scene.remove(shootbomb);
+            }, 2000);
+
+        }
+
+        if (shootbullet == false) {
+            shootbomb = master_shootbomb.clone();
+            scene.add(shootbomb);
+
+            shootbomb.scale.x = 5; //scaling x
+            shootbomb.scale.y = 5; //scaling y
+            shootbomb.scale.z = 5; //scaling y
+
+
+            shootbomb.position.x = finalship.position.x;
+            shootbomb.position.z = finalship.position.z;
+            shootbomb.position.y = 4;
+
+            if (finalship.rotation.z == 0)
+                shootbomb.rotation.y = finalship.rotation.y;
+            else
+                shootbomb.rotation.y = -finalship.rotation.y + Math.PI;
+
+            position = new THREE.Vector3(finalship.position.x, finalship.position.y, finalship.position.z);
+
+            shootbullet = true;
+
+        }
+
+    }
+
+}
+
+//Update Clock
+function update() {
+    delta = clock.getDelta();
+    moveDistance = 8 * delta;
+    rotateAngle = (Math.PI / 2) * delta / 8;
+
+    //Movement Forward and Backward Ship 1
+    if (keyboard.pressed("W")) finalship.translateZ(-moveDistance);
+    if (keyboard.pressed("S")) finalship.translateZ(moveDistance);
+
+    //Rotate left/right Ship 1
+    rotation_matrix = new THREE.Matrix4().identity();
+    if (keyboard.pressed("A")) finalship.rotateOnAxis(new THREE.Vector3(0, 1, 0), rotateAngle);
+    if (keyboard.pressed("D")) finalship.rotateOnAxis(new THREE.Vector3(0, 1, 0), -rotateAngle);
+
+    //Movement Forward and Backward Ship 2
+    if (keyboard.pressed("I")) finalship2.translateZ(-moveDistance);
+    if (keyboard.pressed("K")) finalship2.translateZ(moveDistance);
+
+    //Rotate left/right Ship 2
+    rotation_matrix = new THREE.Matrix4().identity();
+    if (keyboard.pressed("J")) finalship2.rotateOnAxis(new THREE.Vector3(0, 1, 0), rotateAngle);
+    if (keyboard.pressed("L")) finalship2.rotateOnAxis(new THREE.Vector3(0, 1, 0), -rotateAngle);
+
+
+    //Look At ship 1 Camera
+    relativeCameraOffset = new THREE.Vector3(30, 10, 90);
+    cameraOffset = relativeCameraOffset.applyMatrix4(finalship.matrixWorld);
+    camera.position.x = cameraOffset.x;
+    camera.position.y = cameraOffset.y;
+    camera.position.z = cameraOffset.z;
+    camera.lookAt(finalship.position);
+
+    //Rendering Multiple Viewports and Cameras
+    SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
+    camera.aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
+    topCamera.aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
+    camera.updateProjectionMatrix();
+    topCamera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setViewport(2, 2, SCREEN_WIDTH, SCREEN_HEIGHT);
+    renderer.clear();
+
+    // Main Camera
+    renderer.setViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+    renderer.render(scene, camera);
+
+    //Top/Alternate Camera
+    renderer.clearDepth();
+    renderer.setViewport(0.0005 * SCREEN_WIDTH, 1, 0.3 * SCREEN_WIDTH - 2, SCREEN_HEIGHT - 300);
+    renderer.render(scene, topCamera);
+
+    //Bomb Velocity 
+    if (shootbomb) {
+
+        shootbomb.translateX(moveDistance * 6);
+
+        if (shootbomb.position.x > 200 || shootbomb.position.x < -200) {
+            shootbomb.position.set(position);
+            setTimeout(() => {
+                shootbullet = false;
+                scene.remove(shootbomb);
+            }, 2000);
+
+        }
+    }
+
+    // Collision Detection by Raycasting
+    if (position && shootbomb) {
+        raycaster.set(shootbomb.position, direction.subVectors(position, shootbomb.position).normalize());
+        raycaster.far = far.subVectors(position, shootbomb.position).length();
+        intersects = raycaster.intersectObjects(meshArray);
+        if (intersects.length > 0) {
+            ship2.rotation.y = Math.PI;
+            setTimeout(() => {
+                shootbullet = false;
+                scene.remove(shootbomb);
+            }, 2000);
+
+            shootbomb.position.set(position);
+        }
+
+    }
+    //Updating Sun
+    parameters.distance = 500;
+    if (Math.floor(parameters.inclination) < 0.5)
+        parameters.inclination += 0.001;
+    if (Math.floor(parameters.inclination) > 0.5)
+        parameters.inclination -= 0.001;
+    parameters.azimuth += 0.0005;
 
     function updateSun() {
         theta = Math.PI * (parameters.inclination - 0.5);
@@ -321,102 +395,37 @@ function init() {
     }
 
     updateSun();
-
-    //FinalShip
-    finalship = new THREE.Group();
-
-    finalship2 = new THREE.Group();
-
-    //3ds files dont store normal maps
-    loader4 = new THREE.TextureLoader();
-    normal = loader4.load("./Objects/Galleon.jpg");
-    loader5 = new THREE.TDSLoader();
-    loader5.setResourcePath("Objects/");
-    loader5.load("Objects/Galleon.3ds", function(object) {
-        object.traverse(function(child) {
-            if (child.isMesh) {
-              
-                child.material.normalMap = normal;
-            }
-        });
-
-       
-
-        ship = object; //local to global
-        ship.rotation.x = -Math.PI / 2; //back to front
-        ship.rotation.z = -Math.PI; //opposite direction
-        camera.position.z = ship.position.z + 60; //initial camera position
-        finalship.add(ship);
-        finalship.add(pivotPoint);
-
-
-    });
-
-    loader6 = new THREE.TextureLoader();
-    normal = loader6.load("./Objects/Galleon.jpg");
-    loader7 = new THREE.TDSLoader();
-    loader7.setResourcePath("Objects/");
-    loader7.load("Objects/Galleon.3ds", function(object) {
-        object.traverse(function(child) {
-            if (child.isMesh) {
-              meshArray.push(child);
-                child.material.normalMap = normal;
-            }
-        });
-
-       
-
-        ship2 = object; //local to global
-        ship2.rotation.x = -Math.PI / 2; //back to front
-        ship2.rotation.z = -Math.PI; //opposite direction
-        camera.position.z = ship.position.z + 60; //initial camera position
-        bGroup2.add(ship2);
-        finalship2.add(bGroup2);
-        finalship2.position.set(50, 0, 0);
-
-
-    });
-
-
-
-    scene.add(finalship);
-    scene.add(finalship2);
-
-
-
-    //Orbit Controls
-    controls = new THREE.OrbitControls(camera, renderer.domElement);
-    controls.maxPolarAngle = Math.PI * 0.495;
-    controls.target.set(0, 10, 0);
-    controls.minDistance = 40.0;
-    controls.maxDistance = 200.0;
-    controls.update();
-
-
-
-
 }
 
-function animate() {
-    requestAnimationFrame(animate);
-    render();
-    update();
-}
-
+//Render Function
 function render() {
 
+    //Sharks revolution around ships
     pivotPoint.position.set(finalship.position.x, finalship.position.y, finalship.position.z)
     pivotPoint.rotation.y += 0.01;
+    pivotPoint2.position.set(finalship2.position.x, finalship2.position.y, finalship2.position.z)
+    pivotPoint2.rotation.y += 0.01;
+
+    //Water effect
     time = performance.now() * 0.001;
     camera.position.y = Math.sin(time * 2) + 1 + 10;
     water.material.uniforms["time"].value += 1.0 / 60.0;
     renderer.render(scene, camera);
 }
 
+//Animate
+function animate() {
+    requestAnimationFrame(animate);
+    render();
+    update();
+}
+
 //Game Calling
 init();
 animate();
 
+//Listeners
+window.addEventListener("keydown", onKeyDown, false);
 
     </script>
 </body>
