@@ -48,7 +48,12 @@ An adventures game of battling ships!
 
 ## Application
 
-In the fast growing field of software engineering and development and even more rapidly growing sector of game development the future is hard to predict.<br>We are working with this game as our major project and as a part of our assesment we got this type of work for doing better with development cycle, development period,graphics, scripting, adopting new technology, animation.<br>In general software project is a project focusing on the creation of software.<br> Consequently,Success can be measured by taking a look at the resulting software.<br> In a game project, the product is a game But here comes the point: A game is much more than just its software. It has to provide content to become enjoyable. Just like a web server: without content the server is useless, and the quality cannot be measured. <br>This has an important effect on the game project as a whole. The software part of the project is not the only one, and it must be considered in connection to all other parts.<br> The environment of the game, the story, characters, game plays, the artwork, and so on.
+In the fast growing field of software engineering and development and even more rapidly growing sector of game development the future is hard to predict.<br>
+We are working with this game as our major project and as a part of our assesment we got this type of work for doing better with development cycle, development period,graphics, scripting, adopting new technology, animation.<br>
+In general software project is a project focusing on the creation of software.<br> Consequently,Success can be measured by taking a look at the resulting software.<br>
+In a game project, the product is a game But here comes the point: A game is much more than just its software. It has to provide content to become enjoyable. Just like a web server: without content the server is useless, and the quality cannot be measured. <br>
+This has an important effect on the game project as a whole. The software part of the project is not the only one, and it must be considered in connection to all other parts.<br> 
+The environment of the game, the story, characters, game plays, the artwork, and so on.
  
 ## Design Schema
 	
