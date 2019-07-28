@@ -1,4 +1,5 @@
-# Pirates of Carribbean
+![image](https://user-images.githubusercontent.com/51989436/62003257-090f7580-b132-11e9-91ad-c5369a4cdf15.png)
+# Pirates of the Carribbean
 An adventures game of battling ships!
 
 ## Table of contents
@@ -13,9 +14,7 @@ An adventures game of battling ships!
 * [Source Code Link](#sourcecode-link)
 
 ## Game Description
- Pirates of Caribbean is an adventure-role playing game, in which players are battling with their ships in order to save their island.
-The battling ship is named as "Black Pearl" . 
- Pirates of Caribbean is a multiplayer game in which players fight the battle with their ships, each ship have five bullets to defend themself from enemy and will only be provided with only "One" life.
+ Pirates of the Caribbean is an adventure-role playing game, in which players are battling with their ships in order to save their island.<br>The battling ship is named as "Black Pearl" . <br>Pirates of Caribbean is a multiplayer game in which players fight the battle with their ships, each ship have five bullets to defend themself from enemy and will only be provided with only "One" life.
 
 ## Requirement Specification
  Here is a list of the minimum Hardware and Software requirements for playing this game:-
