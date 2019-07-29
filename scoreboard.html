@@ -1,8 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <!-- <link rel="stylesheet" type="text/css" href="login.css"> -->
+    <link href="https://fonts.googleapis.com/css?family=Pirata+One&display=swap" rel="stylesheet">
+    <title> score </title>
+  </head>
+
+  <body>
+
 	<style>
-* {
+{
   box-sizing: border-box;
 }
 
@@ -12,12 +19,12 @@ body {
   font-size: 17px;
 }
 #Y{
-	 padding-top:200px;
- text-align: center;
- text-shadow: 3px 2px white;
-font-family: Segoe Script;
-
-font-size: 50px;
+	 
+ 
+  color: white; 
+	font-family: 'Pirata One' , cursive ;
+	font-size: 50px;
+	text-align: center;
 border-style: double;
 border-color: skyblue;
 border-height: 50%;
@@ -26,7 +33,7 @@ width:40%;
 height: 90vh;
 margin:auto;
 background: black;
-opacity: 0.6;
+opacity: 0.5;
 
 
 	
@@ -53,21 +60,60 @@ font-size: 50px;
 .content {
   position: center;
   font-color: white;
-  top: 50;
-  
- 
+  height: 20% ;
+  /* top: 50; */
   width: 100%;
   padding: 10px;
+
+
+}
+
+ul li {
+    box-sizing: border-box;
+    width: 12em;
+    height: 3em;
+    font-size: 25px;
+    border-radius: 0.5em;
+    margin: 0.5em;
+    box-shadow: 0 0 1em rgba(0,0,0,0.2);
+    color: white;
+    font-family:  'Pirata One'  ;
+    text-transform: capitalize;
+    line-height: 3em;
+    transition: 0.3s;
+    cursor: pointer;
+    list-style: none;
+    margin-left: 25%;
+
+}
+
+ul li:nth-child(odd) {
+    background: linear-gradient(to right, rgba(158, 113, 30, 0.596), rgb(141, 93, 84));
+    text-align: left;
+    padding-left: 7%;
+    transform: perspective(500px) rotateY(45deg);
+}
+
+ul li:nth-child(even) {
+    background: linear-gradient(to left, rgba(158, 113, 30, 0.596), rgb(141, 93, 84));
+    text-align: right;
+    padding-right: 7%;
+    transform: perspective(500px) rotateY(-45deg);
+}
+
+ul li:nth-child(odd):hover {
+    transform: perspective(200px) rotateY(45deg);
+    padding-left: 5%;
+}
+
+ul li:nth-child(even):hover {
+    transform: perspective(200px) rotateY(-45deg);
+    padding-right: 5%;
 }
 
 
-</style>
-</head>
-<body>
 
-    <audio id="myaudio" autoplay loop>
-        <source src="Pirates of the Caribbean.mp3" type="audio/mpeg">
-      </audio>
+</style>
 
 <video autoplay muted loop id="myVideo">
   <source src="AntiqueSimplisticFruitbat-mobile.mp4" type="video/mp4">
@@ -75,26 +121,56 @@ font-size: 50px;
 </video>
 
 <div class="content">
-  <h1 id="Y">Thanks for Playing</h1>
+  <h1 id="Y">Thank You For Playing !!
+    <!-- RESTART/EXIT -->
+<div>
+    <ul><br>
+      <br>
+      <br>
+        <li id="restart"> Restart Game </li>
+        <li id="exit"> Exit </li>
+    </ul>
+  </div>
+  </h1>
+  <!-- background audio -->
+<audio id="myaudio" autoplay loop>
+    <source src="score.mp3" type="audio/mpeg">
+  </audio>
+
+   <!-- pause play button -->
+   <button class="play" onclick="playAudio()" type="button">Play</button><br>
+  <button class="pause" onclick="pauseAudio()" type="button">Pause</button><br> 
+  
   
   
 </div>
 
+
+
+
 <script>
+
+
 var video = document.getElementById("myVideo");
 var btn = document.getElementById("myBtn");
 
+//on mouse click
+document.getElementById("restart").addEventListener("click", function myFunction() {
+            location.replace("index.html");
+            // alert("PLAYER HAS BEEN SELECTED");
+            
+        })
+
+        document.getElementById("exit").addEventListener("click", function myFunction() {
+          // if (confirm("Close Window?")) {
+    window.close();
+  // }
+            
+        })
 
 
 </script>
 
-
-
-	<link rel="stylesheet" type="text/css" href="login.css">
-	<title>Scoreboard</title>
-</head>
-<body>
 	
 </body>
-
 </html>
