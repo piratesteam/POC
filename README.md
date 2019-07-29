@@ -84,6 +84,8 @@ Every game must has a menu so it can be user friendly enough and gamers can easi
 <br>
 ![image](https://user-images.githubusercontent.com/51989436/62023994-d6788200-b1f0-11e9-9a60-196ff79cee4f.png)<br>
 <br>
+![image](https://user-images.githubusercontent.com/51989436/62024099-569ee780-b1f1-11e9-8313-9514237d915e.png)<br>
+<br>
 
 ## Contributors
 1. [Aditi Sitoke](https://www.linkedin.com/in/aditi-sitoke-54805613a/)
