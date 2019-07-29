@@ -81,7 +81,7 @@ input:valid ~ label {
   color: rgba(255, 255, 255, 0.5);
 }
 input:focus {
-  outline: none
+  outline: none;
   background-color: black;
   font-family: 'Pirata One' , cursive ;
   font-size: 30px;

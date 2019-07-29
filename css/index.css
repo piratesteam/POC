@@ -14,7 +14,7 @@ h1 { color: white;
 	font-family: 'Pirata One' , cursive ;
 	font-size: 80px;
 	text-align: center;
-	margin-top: 20px;S
+	margin-top: 20px;
 	-webkit-transition: all 0.12s ease-out;
 	-moz-transition: all 0.12s ease-out;
 	-o-transition: all 0.12s ease-out;
@@ -97,6 +97,7 @@ ul li:nth-child(even):hover {
 }
 
 .pause {
+    
     box-sizing: border-box;
 	display:block;
 	width:80px;

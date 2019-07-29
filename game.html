@@ -27,6 +27,19 @@
 </style>
 
 <body>
+    
+        <audio id="missile_sound">
+                <source src="missile.mp3" type="audio/mpeg">
+       </audio>
+       <audio id="sea_sound">
+            <source src="sea_sound.mp3" type="audio/mpeg">
+       </audio>
+       <audio id="blast_sound">
+            <source src="boom_bang.mp3" type="audio/mpeg">
+       </audio>
+       <audio id="hit_sound">
+            <source src="hit.mp3" type="audio/mpeg">
+       </audio>
 
     <a href="#openModal" id="#Modal">
         <img src="images/info.png" alt="" width="50" height="50">
@@ -115,6 +128,12 @@ let finalship2 = new THREE.Group();
 let frames =0,frames2 =0;
 let shootbomb2,shootbullet2=false,position2,bulletCount2=16,meshArray2=[],master_shootbomb2,hit2=0,bulletLeft = true,bulletLeft2=true;
    
+
+var missile_sound = document.getElementById("missile_sound");
+var sea_sound = document.getElementById("sea_sound");
+var blast_sound = document.getElementById("blast_sound");
+var hit_sound = document.getElementById("hit_sound");
+
 //Initialization
 function init() {
 
@@ -322,9 +341,9 @@ function onKeyDown(e) {
     }
     
     if (e.keyCode == 32) { //space bar
-
+        missile_sound.play();
         if (shootbullet) {
-
+            
             setTimeout(() => {
                 shootbullet = false;
                 scene.remove(shootbomb);
@@ -370,7 +389,7 @@ function onKeyDown(e) {
 
 
 if (e.keyCode == 96) { //0
-
+    missile_sound.play();
         if (shootbullet2) {
 
             setTimeout(() => {
@@ -425,30 +444,50 @@ function update() {
     rotateAngle = (Math.PI / 2) * delta / 8;
 
     //Movement Forward and Backward Ship 1
-    if (keyboard.pressed("W")) finalship.translateZ(-moveDistance*1.2);
-    if (keyboard.pressed("S")) finalship.translateZ(moveDistance*1.2);
+    if (keyboard.pressed("W")){
+         sea_sound.play();
+         finalship.translateZ(-moveDistance*1.2);
+        
+    }
+    if (keyboard.pressed("S")) {
+        sea_sound.play();
+        finalship.translateZ(moveDistance*1.2);
+       
+    }
     //Rotate left/right Ship 1
     rotation_matrix = new THREE.Matrix4().identity();
     if (keyboard.pressed("A")) {
+        sea_sound.play();
         finalship.rotateOnAxis(new THREE.Vector3(0, 1, 0), rotateAngle);
 
     }
     if (keyboard.pressed("D")){
-        
+        sea_sound.play();
          finalship.rotateOnAxis(new THREE.Vector3(0, 1, 0), -rotateAngle);
 
     }
     //Movement Forward and Backward Ship 2
-    if (keyboard.pressed("up")) finalship2.translateZ(-moveDistance*1.2);
-    if (keyboard.pressed("down")) finalship2.translateZ(moveDistance*1.2);
-
+    if (keyboard.pressed("up")){
+         sea_sound.play();
+         finalship2.translateZ(-moveDistance*1.2);
+    }
+    if (keyboard.pressed("down")) {
+        sea_sound.play();
+        finalship2.translateZ(moveDistance*1.2);
+         
+    }
     
 
     //Rotate left/right Ship 2
     rotation_matrix = new THREE.Matrix4().identity();
-    if (keyboard.pressed("left")) finalship2.rotateOnAxis(new THREE.Vector3(0, 1, 0), rotateAngle);
-    if (keyboard.pressed("right")) finalship2.rotateOnAxis(new THREE.Vector3(0, 1, 0), -rotateAngle);
-
+    if (keyboard.pressed("left")){
+        sea_sound.play();
+         finalship2.rotateOnAxis(new THREE.Vector3(0, 1, 0), rotateAngle);
+    }
+    if (keyboard.pressed("right")) {
+        sea_sound.play();
+        finalship2.rotateOnAxis(new THREE.Vector3(0, 1, 0), -rotateAngle);
+    }
 
     //Look At ship 1 Camera
     // relativeCameraOffset = new THREE.Vector3(30, 10, 90);
@@ -490,7 +529,8 @@ function update() {
 
     //Bomb Velocity 
     if (shootbomb) {
-
+        
+     
         shootbomb.translateX(moveDistance * 6);
 
         if (shootbomb.position.x > 200 || shootbomb.position.x < -200) {
@@ -498,6 +538,7 @@ function update() {
             setTimeout(() => {
                 shootbullet = false;
                 scene.remove(shootbomb);
+                
             }, 2000);
 
         }
@@ -522,8 +563,10 @@ if (shootbomb2.position.x > 200 || shootbomb2.position.x < -200) {
         raycaster.set(shootbomb.position, direction.subVectors(position, shootbomb.position).normalize());
         raycaster.far = far.subVectors(position, shootbomb.position).length();
         intersects = raycaster.intersectObjects(meshArray);
+        
         if (intersects.length > 0) {
             hit++;
+            hit_sound.play();
             setTimeout(() => {
                 shootbullet = false;
                 scene.remove(shootbomb);
@@ -540,6 +583,7 @@ if (shootbomb2.position.x > 200 || shootbomb2.position.x < -200) {
         intersects2 = raycaster.intersectObjects(meshArray2);
         if (intersects2.length > 0) {
             hit2++;
+            hit_sound.play();
             setTimeout(() => {
                 shootbullet2 = false;
                 scene.remove(shootbomb2);
@@ -592,7 +636,7 @@ function render() {
     pivotPoint2.rotation.y += 0.01;
 
         if(hit == 3 ){
-
+            blast_sound.play();
             $("#6").hide();
             ship2.rotation.y += 0.01;
             setTimeout(function(){
@@ -665,7 +709,7 @@ function render() {
 
 
       if(hit2 ==3){
-
+      blast_sound.play();
 $("#3").hide();
 ship.rotation.y += 0.01;
 setTimeout(function(){

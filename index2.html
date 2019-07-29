@@ -25,8 +25,8 @@
 </audio>
 
  <!-- pause play button -->
- <button class="play" onclick="playAudio()" type="button">Play</button><br>
-<button class="pause" onclick="pauseAudio()" type="button">Pause</button><br> 
+ <!-- <button class="play" onclick="playAudio()" type="button">Play</button><br>
+<button class="pause" onclick="pauseAudio()" type="button">Pause</button><br>  -->
 
 
 <script type="text/javascript">
@@ -46,7 +46,7 @@
           alert('You pressed a "enter" key ');
       }
   };
-
+  audio.play();
 
 // pause audio on click
 var audio = document.getElementById("myaudio");
