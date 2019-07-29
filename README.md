@@ -14,11 +14,15 @@ An adventures game of battling ships!
 * [Source Code Link](#sourcecode-link)
 
 ## Game Description
-*  Pirates of the Caribbean is an adventure-role playing game, in which players are battling with their ships in order to save their island.
+*  Pirates of the Caribbean is an adventure-role playing game, in which players are battling with their ships in order to save their    island.
+### Features
+ * Single screen with Multi player is available.
+ * Multi screen with Multi player is currently in process.
  * The battling ship is named as "Black Pearl".
  * Pirates of Caribbean is a multiplayer game in which players fight the battle with their ships.
  * Each ship will have five bullets to defend themself from enemy.
  * Each ship will only be provided with only "three" life.
+ * The ship which destroy the another ship by attacking five bullets ,will win the game.
 
 ## Requirement Specification
  Here is a list of the minimum Hardware and Software requirements for playing this game:-
@@ -54,7 +58,11 @@ An adventures game of battling ships!
 * In a game project, the product is a game But here comes the point: A game is much more than just its software. It has to provide content to become enjoyable. Just like a web server: without content the server is useless, and the quality cannot be measured. <br>
 * This has an important effect on the game project as a whole. The software part of the project is not the only one, and it must be considered in connection to all other parts.<br> 
 * The environment of the game, the story, characters, game plays, the artwork, and so on.
- 
+
+## Application Structure
+Our project application consist of following parts and subparts:
+
+
 ## Design Schema
 	
 ## Technologies
@@ -63,7 +71,7 @@ An adventures game of battling ships!
 * Javascript
 * HTML
 * CSS 
-* Firebase 
+* Firebase(we are )
 
 ## User Interface
 Every game must has a menu so it can be user friendly enough and gamers can easily fulfill their need. <br>User interface is also an important thing while creating the SRS document section.<br> In this SRS document part; we have used the menu snapshots in the user manual part. <br>These snapshots are based on the display of the game. 
