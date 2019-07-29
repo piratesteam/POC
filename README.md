@@ -76,6 +76,8 @@ Our project application consist of following parts and subparts:<br>
 ## User Interface
 Every game must has a menu so it can be user friendly enough and gamers can easily fulfill their need. <br>User interface is also an important thing while creating the SRS document section.<br> In this SRS document part; we have used the menu snapshots in the user manual part. <br>These snapshots are based on the display of the game. <br>
 <br>
+![image](https://user-images.githubusercontent.com/51989436/62023641-6c131200-b1ef-11e9-87c8-f25d874cc3f3.png)
+
 
 ## Contributors
 1. [Aditi Sitoke](https://www.linkedin.com/in/aditi-sitoke-54805613a/)
