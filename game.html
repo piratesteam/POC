@@ -11,8 +11,8 @@
     <script src="js/keyboard.js"></script>
     <script src="js/three.js"></script>
    
-    <script src="js/Sky.js"></script>
-    <script src="js/"></script>
+    <script src="js/sky.js"></script>
+  
     <script src="js/TDSLoader.js"></script>
     <script src="js/GLTFLoader.js"></script>
     <script src="js/Detector.js"></script>
@@ -164,7 +164,7 @@ function init() {
         textureWidth: 512,
         textureHeight: 512,
         waterNormals: new THREE.TextureLoader().load(
-            "Js/waternormals.jpg",
+            "js/waternormals.jpg",
             function(texture) {
                 texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
             }
