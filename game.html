@@ -27,6 +27,10 @@
 </style>
 
 <body>
+
+        <audio id="game_sound" autoplay loop>
+                <source src="game_sound.mp3" type="audio/mpeg">
+           </audio>
     
         <audio id="missile_sound">
                 <source src="missile.mp3" type="audio/mpeg">
@@ -132,7 +136,7 @@ let finalship2 = new THREE.Group();
 let frames =0,frames2 =0;
 let shootbomb2,shootbullet2=false,position2,bulletCount2=16,meshArray2=[],master_shootbomb2,hit2=0,bulletLeft = true,bulletLeft2=true;
    
-
+var game_sound = document.getElementById("game_sound");
 var missile_sound = document.getElementById("missile_sound");
 var sea_sound = document.getElementById("sea_sound");
 var blast_sound = document.getElementById("blast_sound");
@@ -140,7 +144,7 @@ var hit_sound = document.getElementById("hit_sound");
 
 //Initialization
 function init() {
-
+    game_sound.play();
     //Intailizing Scene
     scene = new THREE.Scene();
 
@@ -300,6 +304,8 @@ function init() {
         finalship.add(pivotPoint);
     });
 
+
+
     //Ship 2
     loader = new THREE.TextureLoader();
     normal = loader.load("./models/ship/Galleon.jpg");
@@ -326,6 +332,9 @@ function init() {
     //Adding Ships to scene
     scene.add(finalship);
     scene.add(finalship2);
+
+
+    
 
     //Setting Renderer
     renderer.setSize(window.innerWidth, window.innerHeight);
