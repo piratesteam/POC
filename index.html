@@ -8,24 +8,42 @@
     <link rel="stylesheet" href="css/index.css">
 
     <h1>Pirates of Caribbean</h1>
-
+    
+    
 </head>
 
 <body>
 
     <div>
-        <button class="transparent_btn" id="upButton" onclick="myFunction()" onkeypress="enter()">SINGLE PLAYER</button>
-        <br><br><br>
-        <button class="transparent_btn1" id="downButton" onclick="myFunction()">MULTI PLAYER</button>
-
+        <ul>
+            <li id="list"> Single Screen</li>
+            <li id="list2"> Multi Screen</li>
+        </ul>
     </div>
 
+<!-- background audio -->
+<audio id="myaudio" autoplay loop>
+    <source src="Pirates of the Caribbean.mp3" type="audio/mpeg">
+  </audio>
+
+   <!-- pause play button -->
+   <button class="play" onclick="playAudio()" type="button">Play</button><br>
+  <button class="pause" onclick="pauseAudio()" type="button">Pause</button><br> 
+  
     <script type="text/javascript">
 
         //on mouse click
-        function myFunction() {
-            alert("PLAYER HAS BEEN SELECTED");
-        }
+        document.getElementById("list").addEventListener("click", function myFunction() {
+            location.replace("index2.html");
+            // alert("PLAYER HAS BEEN SELECTED");
+            
+        })
+
+        document.getElementById("list2").addEventListener("click", function myFunction() {
+           alert('We Are Working on Multi Screen Support ')
+            // alert("PLAYER HAS BEEN SELECTED");
+            
+        })
 
         //enter key press
         // $.fn.enter= function(){
@@ -37,7 +55,14 @@
         };
 
 
-
+// pause audio on click
+var audio = document.getElementById("myaudio");
+function pauseAudio() { 
+  audio.pause(); 
+}
+function playAudio() { 
+  audio.play(); 
+}
 
     </script>
 

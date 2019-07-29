@@ -75,4 +75,85 @@ body canvas{
     background: #00d9ff;
 }
 
+.life-left{
+    /* background-color: #000; */
+    /* width: 9%; */
+    float:left;
+    padding-left: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-top: 1%;
 
+}
+.life-right{
+    /* background-color: #000; */
+    width: 9%;
+    padding-left: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    float: right;
+    /* position: relative; */
+    margin-top: 1%;
+    /* margin-left: 90%; */
+    /* align-items: inherit; */
+
+}
+
+
+.bullet{
+    height: 40px;
+    width: 20px;
+    opacity: 1;
+}
+
+.main{
+    z-index: 100;
+
+    width:8%;
+    height: 8%;
+    /* background-color:; */
+    margin: 0%;
+    padding-top:2px;
+    padding-bottom:2px;
+    padding-right:0px;
+    float: left;
+}
+
+.main2{
+width:8%;
+z-index: 99;
+
+height: 8%;
+/* background-color: black; */
+margin: 0%;
+padding-top:2px;
+padding-bottom:2px;
+padding-right:0px;
+float: right;
+}
+
+.submain{
+width: 18%;
+height: 40%;
+float: left;
+background-color: green;
+border: 1px solid #00FF	00;
+margin: 0.5%;
+position: relative;
+top: 50%;
+left: 2%;
+color: green;
+}
+
+.submain2{
+width: 18%;
+height: 40%;
+float: left;
+background-color: green;
+border: 1px solid #00FF	00;
+margin: 0.5%;
+position: relative;
+top: 50%;
+left: 2%;
+color: green;
+}

@@ -12,12 +12,52 @@
     <div class="centered">
       <div class="group">
        <input type="text" id="name" required="required"/>
-       <label for="name">PLAYER NAME</label>
+       <label for="name">Enter Player Name</label>
        <div class="bar"></div>
        <br>
       </div>
     </div>
-    <button class="transparent_btn">START GAME</button>
-     
+    <button id="start" class="transparent_btn">START GAME</button>
+
+    <!-- background audio -->
+<audio id="myaudio" autoplay loop>
+  <source src="Pirates of the Caribbean.mp3" type="audio/mpeg">
+</audio>
+
+ <!-- pause play button -->
+ <button class="play" onclick="playAudio()" type="button">Play</button><br>
+<button class="pause" onclick="pauseAudio()" type="button">Pause</button><br> 
+
+
+<script type="text/javascript">
+
+  //on mouse click
+  document.getElementById("start").addEventListener("click", function myFunction() {
+      location.replace("game.html");
+      // alert("PLAYER HAS BEEN SELECTED");
+      
+  })
+
+  //enter key press
+  // $.fn.enter= function(){
+  function enter() {
+      var keycode = (event.keyCode ? event.keyCode : event.which);
+      if (keycode == '13') {
+          alert('You pressed a "enter" key ');
+      }
+  };
+
+
+// pause audio on click
+var audio = document.getElementById("myaudio");
+function pauseAudio() { 
+audio.pause(); 
+}
+function playAudio() { 
+audio.play(); 
+}
+
+</script>
+   
 </body>
 </html>

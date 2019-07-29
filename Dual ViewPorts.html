@@ -132,10 +132,11 @@ function init() {
     camera.position.set(30,0,0);
 
     //Camera 2
-    topCamera = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
+    topCamera = new THREE.PerspectiveCamera(120, ASPECT, NEAR, FAR);
     scene.add(topCamera);
-    topCamera.position.set(-30, 100, 100);
-    topCamera.lookAt(scene.position);
+    // topCamera.position.set(-30, 100, 100);
+    // topCamera.lookAt(scene.position);
+    topCamera.position.set(40,30,60);
 
 
     //Detecting WebGL
@@ -201,7 +202,34 @@ function init() {
     scene.background = cubeCamera.renderTarget;
 
     //Initializing Models
- 
+    loader = new THREE.GLTFLoader();
+    loader.load('models/mountain/out.glb', function(gltf) {
+
+        // gltf.scene.scale.x = 1.2;
+         gltf.scene.scale.y = 1;
+        // gltf.scene.scale.z = 1.2;
+        //  gltf.scene.rotate.y=20;
+        gltf.scene.position.set(-200, -38, -200);
+        mountain = gltf.scene;
+        // pivotPoint.add(shark);
+        scene.add(mountain);
+
+    });
+
+    loader = new THREE.GLTFLoader();
+    loader.load('models/mountain/out.glb', function(gltf) {
+
+        gltf.scene.scale.x = 1;
+         gltf.scene.scale.y = 1;
+        gltf.scene.scale.z = 1;
+        //  gltf.scene.rotate.y=20;
+        gltf.scene.position.set(400, -38, -100);
+        mountain = gltf.scene;
+        // pivotPoint.add(shark);
+        scene.add(mountain);
+
+    });
+
     //Bomb
     loader = new THREE.GLTFLoader();
     loader.load('models/bomb/scene.gltf', function(gltf) {
@@ -215,7 +243,7 @@ function init() {
 
     });
 
-//bomb2
+// mountain
 
     loader = new THREE.GLTFLoader();
     loader.load('models/bomb/scene.gltf', function(gltf) {
@@ -272,7 +300,7 @@ function init() {
         ship = object; //local to global
         ship.rotation.x = -Math.PI / 2; //back to front
         ship.rotation.z = -Math.PI; //opposite direction
-        camera.position.z = ship.position.z + 60; //initial camera position
+        // camera.position.z = ship.position.z + 60; //initial camera position
         finalship.add(ship);
         finalship.add(pivotPoint);
     });
@@ -292,7 +320,7 @@ function init() {
         ship2 = object; //local to global
         ship2.rotation.x = -Math.PI/2; //back to front
         ship2.rotation.z = -Math.PI; //opposite direction
-        topCamera.position.z = ship.position.z + 60; //initial camera position
+        // topCamera.position.z = ship.position.z + 60; //initial camera position
         bGroup2.add(ship2);
         finalship2.add(bGroup2);
         finalship2.add(pivotPoint2);
@@ -468,8 +496,8 @@ function update() {
 
     //Rendering Multiple Viewports and Cameras
     SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
-    camera.aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
-    topCamera.aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
+    camera.aspect = 0.5*SCREEN_WIDTH / SCREEN_HEIGHT;
+    topCamera.aspect = 0.5*SCREEN_WIDTH / SCREEN_HEIGHT;
     camera.updateProjectionMatrix();
     topCamera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -477,16 +505,22 @@ function update() {
     renderer.clear();
 
     // Main Camera
-    renderer.setViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+    // renderer.setViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+    renderer.setViewport( 1, 1,   0.5 * SCREEN_WIDTH - 2, SCREEN_HEIGHT - 2 );
     renderer.render(scene, camera);
 
-    // Top/Alternate Camera
-    renderer.clearDepth();
-    renderer.setViewport(0.0005 * SCREEN_WIDTH, 1, 0.3 * SCREEN_WIDTH - 2, SCREEN_HEIGHT - 300);
+    //Top/Alternate Camera
+    // renderer.clearDepth();
+    // renderer.setViewport(0.0005 * SCREEN_WIDTH, 1, 0.3 * SCREEN_WIDTH - 2, SCREEN_HEIGHT - 300);
+    // renderer.render(scene, topCamera);
 
-    if(viewport2){
+    renderer.clearDepth();
+    renderer.setViewport( 0.5 * SCREEN_WIDTH + 1, 1,   0.5 * SCREEN_WIDTH - 2, SCREEN_HEIGHT - 2 );
     renderer.render(scene, topCamera);
-    }
+
+    // if(viewport2){
+    // renderer.render(scene, topCamera);
+    // }
 
     //Bomb Velocity 
     if (shootbomb) {
@@ -731,6 +765,7 @@ ship.rotation.y += 0.005;
 }
 
 }
+
 
     //Water effect
     time = performance.now() * 0.001;
