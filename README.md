@@ -61,7 +61,7 @@ An adventures game of battling ships!
 
 ## Application Structure
 Our project application consist of following parts and subparts:
-
+![image](https://user-images.githubusercontent.com/51989436/62023526-eb541600-b1ee-11e9-8fe5-097f03f87ced.png)
 
 ## Design Schema
 	
