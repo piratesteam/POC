@@ -1,5 +1,5 @@
 ![image](https://user-images.githubusercontent.com/51989436/62003257-090f7580-b132-11e9-91ad-c5369a4cdf15.png)
-# Pirates of the Carribbean
+# Pirates of the Caribbean
 An adventures game of battling ships!
 
 ## Table of contents
@@ -10,6 +10,7 @@ An adventures game of battling ships!
 * [User Interface](#user-interface)
 * [Contributors](#contributors)
 * [References](#references)
+* [Project Link](#project-link)
 * [Source Code](#source-code)
 
 ## Game Description
@@ -17,14 +18,16 @@ An adventures game of battling ships!
 * Pirates of the Caribbean is an adventure-role playing game, in which players are battling with their ships in order to save their island.
 
 ### Features
-* Single screen with Multi player is available.
-* Multi screen with Multi player is currently in process.
+* Single screen on single machine with Multi player is available.
+* Multi screen on single machine with Multi player is available.
+* Multi screen on different machines with multi player is currently in process.
 * The battling ship is named as "Black Pearl".
+* Name of players are also available on screen.
 * Each ship will have five bullets to defend themselfves from enemy.
-* Each ship will only be provided with "three" lives only.
+* Each ship will be provided with "three" lives only.
 * The ship which destroy the another ship by attacking five bullets ,will win the game.
 * Press "c" key for enabling viewport and "V" to disable it.
-* There will be one icon available at left side for help and instructions related to the game.
+* There will be one icon available at top center for help and instructions related to the game.
 
 #### CONTROLS FOR PLAYER 1
 
@@ -53,33 +56,30 @@ An adventures game of battling ships!
 ### Hardware:
 
 * Processor (CPU) with 2 gigahertz (GHz) frequency or above
-* A minimum of 2 GB of RAM
+* A minimum of 4 GB of RAM
 * Monitor Resolution 1024 X 768 or higher
 * Internet Connection Broadband (high-speed) with a speed of 4 Mbps or more
-* Keyboard and a Microsoft Mouse or some other compatible pointing device
+* Keyboard and a Mouse 
 * Sound card
 * Speakers or headphones
 
 ### Browsers:
 
-* Chrome 36+
-* Edge 20+
-* Mozilla Firefox 31+
+* Chrome
+* Mozilla Firefox
 * Internet Explorer 11+ (Windows only)
-* Safari 6+ (MacOS only)
 
 ## Application
 
 * In the fast growing field of software engineering and development and even more rapidly growing sector of game development the future is hard to predict.
-* We are working with this game as our major project and as a part of our assesment we got this type of work for doing better with development cycle, development period,graphics, scripting, adopting new technology, animation.
-* In general software project is a project focusing on the creation of software.
-* Consequently,Success can be measured by taking a look at the resulting software.
-* In a game project, the product is a game But here comes the point: A game is much more than just its software. It has to provide content to become enjoyable. Just like a web server: without content the server is useless, and the quality cannot be measured. 
-* This has an important effect on the game project as a whole. The software part of the project is not the only one, and it must be considered in connection to all other parts.
-* The environment of the game, the story, characters, game plays, the artwork, and so on.
+* We are working on this game as our major project and as a part of our assesment.
+* With this type of work, we can do better with development cycle, development period,graphics, scripting, adopting new technology, animation.
+* In a game project, the product is a game But here comes the point: A game is much more than just a software. It has to provide content to become enjoyable. Just like a web server: without content the server is useless, and the quality cannot be measured. 
+* This has an important effect on the game project as a whole. The software part of the project is not the only one, and it must be considered in connection to all other parts like the environment of the game, the story, characters, game plays, the artwork, and so on.
 
 ### Application Structure :
 Our project application consist of following parts and subparts:	
+
 ## Technologies
 
  This Project is created with the use of following technologies:
@@ -92,7 +92,7 @@ Our project application consist of following parts and subparts:
 
 ## User Interface
 
-Every game must has a menu so it can be user friendly enough and gamers can easily fulfill their need. 
+Every game must has a menu so it can be user friendly and gamers can easily fulfill their needs. 
 User interface is also an important thing while creating the SRS document section.
 In this SRS document part; we have used the menu snapshots in the user manual part. 
 These snapshots are based on the display of the game. 
@@ -119,6 +119,9 @@ These snapshots are based on the display of the game.
 * ANIMATIONS    : www.sketchfab.com     
 * FIREBASE      : www.firebase.google.com
 * TUTORIALS     : www.youtube.com ,www.google.com
+
+## Project Link
+
 
 ## Source Code
 [Git Link](https://github.com/piratesteam/POC)
