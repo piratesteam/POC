@@ -1,5 +1,5 @@
 ![image](https://user-images.githubusercontent.com/51989436/62003257-090f7580-b132-11e9-91ad-c5369a4cdf15.png)
-# Pirates of the Carribbean
+# Pirates of the Caribbean
 An adventures game of battling ships!
 
 ## Table of contents
