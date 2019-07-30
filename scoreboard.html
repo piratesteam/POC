@@ -1,177 +1,71 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <!-- <link rel="stylesheet" type="text/css" href="login.css"> -->
-    <link href="https://fonts.googleapis.com/css?family=Pirata+One&display=swap" rel="stylesheet">
-    <title> score </title>
-  </head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<link href="https://fonts.googleapis.com/css?family=Pirata+One&display=swap" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="/css/scoreboard.css">
+	<title>SCORE BOARD</title>
+</head>
 
-  <body>
+<body>
 
-	<style>
-{
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  font-family: Arial;
-  font-size: 17px;
-}
-#Y{
-	 
- 
-  color: white; 
-	font-family: 'Pirata One' , cursive ;
-	font-size: 50px;
-	text-align: center;
-border-style: double;
-border-color: skyblue;
-border-height: 50%;
-border-width: 10px;
-width:40%;
-height: 90vh;
-margin:auto;
-background: black;
-opacity: 0.5;
-
-
-	
-}
-#D
-{
-  text-align: center;
- text-shadow: 3px 2px white;
-font-family: Segoe Script;
-font-size: 50px;
-
-}
-
-
-
-#myVideo {
-  position: fixed;
-  right: 0;
-  bottom: 0;
-  min-width: 100%; 
-  min-height: 100%;
-}
-
-.content {
-  position: center;
-  font-color: white;
-  height: 20% ;
-  /* top: 50; */
-  width: 100%;
-  padding: 10px;
-
-
-}
-
-ul li {
-    box-sizing: border-box;
-    width: 12em;
-    height: 3em;
-    font-size: 25px;
-    border-radius: 0.5em;
-    margin: 0.5em;
-    box-shadow: 0 0 1em rgba(0,0,0,0.2);
-    color: white;
-    font-family:  'Pirata One'  ;
-    text-transform: capitalize;
-    line-height: 3em;
-    transition: 0.3s;
-    cursor: pointer;
-    list-style: none;
-    margin-left: 25%;
-
-}
-
-ul li:nth-child(odd) {
-    background: linear-gradient(to right, rgba(158, 113, 30, 0.596), rgb(141, 93, 84));
-    text-align: left;
-    padding-left: 7%;
-    transform: perspective(500px) rotateY(45deg);
-}
-
-ul li:nth-child(even) {
-    background: linear-gradient(to left, rgba(158, 113, 30, 0.596), rgb(141, 93, 84));
-    text-align: right;
-    padding-right: 7%;
-    transform: perspective(500px) rotateY(-45deg);
-}
-
-ul li:nth-child(odd):hover {
-    transform: perspective(200px) rotateY(45deg);
-    padding-left: 5%;
-}
-
-ul li:nth-child(even):hover {
-    transform: perspective(200px) rotateY(-45deg);
-    padding-right: 5%;
-}
-
-
-
-</style>
-
-<video autoplay muted loop id="myVideo">
-  <source src="AntiqueSimplisticFruitbat-mobile.mp4" type="video/mp4">
-  Your browser does not support HTML5 video.
-</video>
-
-<div class="content">
-  <h1 id="Y">Thank You For Playing !!
-    <!-- RESTART/EXIT -->
-<div>
-    <ul><br>
-      <br>
-      <br>
-        <li id="restart"> Restart Game </li>
-        <li id="exit"> Exit </li>
-    </ul>
-  </div>
-  </h1>
-  <!-- background audio -->
+	<!-- background audio -->
 <audio id="myaudio" autoplay loop>
-    <source src="score.mp3" type="audio/mpeg">
+    <source src="/music/Pirates of the Caribbean.mp3" type="audio/mpeg">
   </audio>
 
-   <!-- pause play button -->
-   <button class="play" onclick="playAudio()" type="button">Play</button><br>
-  <button class="pause" onclick="pauseAudio()" type="button">Pause</button><br> 
+  <!-- hover audio -->
+  <audio id="audiohover">
+        <source src="/music/button.mp3" type="audio/mpeg">
+      </audio>
 
-  
-  
+
+	<video autoplay muted loop id="myVideo" style="width : 100%">
+  <source src="/music/ship.mp4" type="video/mp4">
+</video>
+<div id="Y" class="content">
+	<br>
+
+<img class="singlefont" src="/images/thankyou.png" onmouseover="play()">	
+<img src="/images/win.png" height="50px" >
+<div class="winner" id="winner"> </div>	
+<br>
+  <div class="button">
+
+        <img class="restart1" id="skull" src="/images/skull.png">
+        <img class="restart" id="restart" src="/images/restart.png" onmouseover="play()">
+        <img class="restart1" src="/images/skull.png">
+        <a id="feedback" href="https://docs.google.com/forms/d/17Dj7KFpQhW1a6IEypqpXGqOyhUFkh_UzOxuAgRBBpzw/edit#responses">Feedback</a>
+
+    </div>
 </div>
 
 
 
+<script type="text/javascript">
 
-<script>
-
-
-var video = document.getElementById("myVideo");
-var btn = document.getElementById("myBtn");
-
-
-//on mouse click
-document.getElementById("restart").addEventListener("click", function myFunction() {
+ //on mouse click
+        document.getElementById("restart").addEventListener("click", function myFunction() {
             location.replace("index.html");
-            // alert("PLAYER HAS BEEN SELECTED");
-            
+          
         })
 
-        document.getElementById("exit").addEventListener("click", function myFunction() {
-          // if (confirm("Close Window?")) {
-    window.close();
-  // }
-            
-        })
+        // on hover sound
+function play(){
+       var audio = document.getElementById("audiohover");
+       audio.play();
+                 }
+
+// rotating skull on hover
+$(".restart").hover(function() {
+           $(".restart1").toggleClass("hovered");
+        });
+
+console.log(localStorage["player1win"]);
+document.getElementById("winner").innerHTML=localStorage["playerwin"];
+
 
 
 </script>
-
-	
 </body>
 </html>

@@ -1,0 +1,116 @@
+body{
+  margin: 0%;
+  width: 100%;
+  height: 100%;
+  background: url('../images/ship.gif') no-repeat center center fixed; 
+-webkit-background-size: cover;
+-moz-background-size: cover;
+-o-background-size: cover;
+  background-size: cover;
+}
+
+.header {
+  background :url("../images/head.png") no-repeat center top fixed;
+  height:300px;
+  width:90%;
+  margin:-10px ;
+  padding-left: 40px;
+  background-size: 950px;
+}
+
+ /* first player input */
+.centered1 {
+  width: 550px;
+  height: 100px;
+  margin-left: 30%;
+  position: relative;
+  z-index: 0;
+  
+  
+}
+/* second player input */
+.centered2 {
+  width: 550px;
+  height: 100px;
+  margin-left: 30%;
+  position: relative;
+  z-index: 0;
+  
+ 
+}
+
+
+/* start button */
+.transparent_btn {
+  box-sizing: border-box;
+    width: 12em;
+    height: 3em;
+    font-size: 25px;
+    border-radius: 1em 0 1em 0;
+    margin: 0.5em;
+    box-shadow: 0 0 1em rgba(0,0,0,0.2);
+    color: rgb(15, 15, 15);
+    font-family:  'Pirata One'  ;
+    text-transform: capitalize;
+    line-height: 3em;
+    transition: 0.3s;
+    cursor: pointer;
+    list-style: none;
+    margin-top: 20px;
+    margin-left: 580px;
+    background-color: rgba(64, 158, 187, 0.5);
+    border:none;
+     box-shadow: 0px 12px 18px rgba(0, 0, 0, 0.1);
+}
+.transparent_btn:hover {
+  
+  color: rgb(8, 8, 8);
+  background-color: #DAA520;
+}
+
+.avtar{
+  border-radius:50px;
+  border:2px solid #DAA520;
+  float: left;
+  z-index: 9999;
+  position: absolute;
+  
+}
+
+
+.in{
+  margin-top:30px;
+  float: left;
+  height:40px;
+  width:400px;
+  margin-left:-01 px;
+  padding-left:120px;
+  font-size:24px;
+  z-index: -1;
+  border-radius: 20px;
+  border:2px solid #DAA520;
+   /*background-color: rgba(64, 158, 187, 0.5);*/
+   background:transparent;
+   color:#DAA520;
+   position: absolute;
+
+}
+
+.con{
+  float:left;
+  position: absolute;
+  z-index: 1;
+}
+
+::placeholder {
+  color: white;
+  opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+ color: white;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+ color: white;
+}

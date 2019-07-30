@@ -7,63 +7,71 @@
     <link href="https://fonts.googleapis.com/css?family=Pirata+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/index.css">
 
-    <h1>Pirates of Caribbean</h1>
+<title>Pirates of Caribbean</title>
     
     
 </head>
 
 <body>
+    
+        <div class="head">
+            </div> 
 
-    <div>
-        <ul>
-            <li id="list"> Single Screen</li>
-            <li id="list2"> Multi Screen</li>
-        </ul>
+    <div class="button">
+
+        <img class="singlescr" id="skull" src="images/skull.png">
+        <img id="single" class="singlefont" src="images/single.png" onmouseover="play()">
+        <img class="singlescr" src="images/skull.png">
+        <br>
+        <br>
+        <img class="multiscr" src="images/skull.png">
+        <img id="multi" class="multifont" src="images/multi.png" onmouseover="play()">  
+        <img class="multiscr" src="images/skull.png">
+        
     </div>
+
 
 <!-- background audio -->
 <audio id="myaudio" autoplay loop>
-    <source src="Pirates of the Caribbean.mp3" type="audio/mpeg">
+    <source src="/music/Pirates of the Caribbean.mp3" type="audio/mpeg">
   </audio>
 
-   <!-- pause play button -->
-   <button class="play" onclick="playAudio()" type="button">Play</button><br>
-  <button class="pause" onclick="pauseAudio()" type="button">Pause</button><br> 
-  
-    <script type="text/javascript">
+  <!-- hover audio -->
+  <audio id="audiohover">
+        <source src="/music/button.mp3" type="audio/mpeg">
+      </audio>
+
+      <!--script  -->
+      <script type="text/javascript">
 
         //on mouse click
-        document.getElementById("list").addEventListener("click", function myFunction() {
-            location.replace("index2.html");
-            // alert("PLAYER HAS BEEN SELECTED");
+        document.getElementById("single").addEventListener("click", function myFunction() {
+            location.replace("input.html");
+        
             
         })
 
-        document.getElementById("list2").addEventListener("click", function myFunction() {
-           alert('We Are Working on Multi Screen Support ')
-            // alert("PLAYER HAS BEEN SELECTED");
+        document.getElementById("multi").addEventListener("click", function myFunction() {
+           location.replace("inputMultiscr.html")
             
         })
 
-        //enter key press
-        // $.fn.enter= function(){
-        function enter() {
-            var keycode = (event.keyCode ? event.keyCode : event.which);
-            if (keycode == '13') {
-                alert('You pressed a "enter" key ');
-            }
-        };
 
+// on hover sound
+function play(){
+       var audio = document.getElementById("audiohover");
+       audio.play();
+                 }
 
-// pause audio on click
-var audio = document.getElementById("myaudio");
-audio.play();
-function pauseAudio() { 
-  audio.pause(); 
-}
-function playAudio() { 
-  audio.play(); 
-}
+// rotating skull on hover
+$(".singlefont").hover(function() {
+           $(".singlescr").toggleClass("hovered");
+        });
+
+ $(".multifont").hover(function() {
+           $(".multiscr").toggleClass("hovered");
+        });
+
 
     </script>
 

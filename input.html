@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	 <link rel="stylesheet" type="text/css" href="css/input.css">
+	 <link href="https://fonts.googleapis.com/css?family=Pirata+One&display=swap" rel="stylesheet">
+	<title>
+      Pirates of Caribbean : input
+	</title>
+	<!-- <h1>Pirates of Caribbean</h1> -->
+</head>
+<body>
+   <div class="header">
+   </div>
+  <!-- player one -->
+    <div class="centered1">
+      <div class="con">
+        <img  class="avtar" src="images/Jack.png" height="100" width="100">
+      </div>
+      <input class="in" id="name1" type="text" placeholder="Enter First player">
+    </div>
+    <br>
+
+    <!-- player two -->
+    <div class="centered2">
+
+      <div class="con">
+        <img  class="avtar" src="images/girl.png" height="100" width="100">
+      </div>
+      <input class="in" id="name2" type="text" placeholder="Enter Second player">
+    </div>
+
+
+<!-- start button -->
+ <button id="start" class="transparent_btn" onmouseover="play()" onclick="click()"> START GAME</button>
+
+
+
+    <!-- background audio -->
+<audio id="myaudio" autoplay loop>
+  <source src="/music/Pirates of the Caribbean.mp3" type="audio/mpeg">
+</audio>
+
+<!-- hover audio -->
+<audio id="audiohover">
+    <source src="/music/button.mp3" type="audio/mpeg">
+  </audio>
+
+<script type="text/javascript">
+
+  //on mouse click
+  document.getElementById("start").addEventListener("click", function myFunction() {
+
+//  localstorage to store name
+    var firstInput = document.getElementById("name1").value;
+    localStorage["player1"]=firstInput;
+
+    var secondInput = document.getElementById("name2").value;
+    localStorage["player2"]=secondInput;
+  // console.log(input);
+
+            location.replace("game.html");
+  })
+
+        // on hover sound
+function play(){
+       var audio = document.getElementById("audiohover");
+       audio.play();
+                 }
+
+
+</script>
+   
+</body>
+</html>
