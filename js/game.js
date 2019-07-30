@@ -6,7 +6,8 @@ let container, camera, scene, renderer, light, controls, water, sphere, geometry
     shark2, topCamera, SCREEN_HEIGHT, SCREEN_WIDTH, ASPECT,VIEW_ANGLE, NEAR, FAR,hit = 0,
     bulletCount=11,distance,frames4=0,frames3=0,viewport2=false,frames =0,frames2 =0,shootbomb2,
     shootbullet2=false,position2,bulletCount2=16,meshArray2=[],master_shootbomb2,hit2=0,
-    bulletLeft = true,bulletLeft2=true,$elie = $("#box"), degree = 0,timer;
+    bulletLeft = true,bulletLeft2=true,$elie = $("#box"), degree = 0,timer,bulletover=false,
+    bullet2over=false;
 
 //Declaring Short Forms
 let keyboard = new THREEx.KeyboardState();
@@ -282,7 +283,7 @@ function onKeyDown(e) {
             setTimeout(() => {
                 shootbullet = false;
                 scene.remove(shootbomb);
-            }, 1500);
+            }, 1000);
 
         }
 
@@ -292,6 +293,7 @@ function onKeyDown(e) {
             bulletCount++;
             if(bulletCount == 16){
                 bulletCount=69;
+                bulletover = true;
                 bulletLeft = false;
                
             }
@@ -330,7 +332,7 @@ if (e.keyCode == 96) { //NumKey 0
             setTimeout(() => {
                 shootbullet2 = false;
                 scene.remove(shootbomb);
-            }, 1500);
+            }, 1000);
 
         }
 
@@ -341,6 +343,7 @@ if (e.keyCode == 96) { //NumKey 0
             if(bulletCount2 == 21){
                 bulletCount2=69;
                 bulletLeft2 = false;
+                bullet2over = true;
 
             }
            
@@ -467,7 +470,7 @@ function update() {
             setTimeout(() => {
                 shootbullet = false;
                 scene.remove(shootbomb);
-            }, 1500);
+            }, 1000);
 
             shootbomb.position.set(position);
         }
@@ -484,7 +487,7 @@ function update() {
             setTimeout(() => {
                 shootbullet2 = false;
                 scene.remove(shootbomb2);
-            }, 1500);
+            }, 1000);
 
             shootbomb2.position.set(position2);
         }
@@ -546,6 +549,27 @@ function render() {
     pivotPoint.rotation.y += 0.01;
     pivotPoint2.position.set(finalship2.position.x, finalship2.position.y, finalship2.position.z)
     pivotPoint2.rotation.y += 0.01;
+
+        //Bullets finished
+        if(bulletover && bullet2over)
+        {
+            bulletover = false;
+            bullet2over = false;
+            bulletCount = 11;
+            bulletCount2 = 16;
+            bulletLeft = true;
+            bulletLeft2 = true;
+            $("#11").show();
+            $("#12").show();
+            $("#13").show();
+            $("#14").show();
+            $("#15").show();
+            $("#16").show();
+            $("#17").show();
+            $("#18").show();
+            $("#19").show();
+            $("#20").show();
+        }
 
         //Adjusting Ship hits and Jerk of Ships(Ship1 to Ship2)
         if(hit==1)

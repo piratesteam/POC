@@ -4,10 +4,10 @@ let container, camera, scene, renderer, light, controls, water, sphere, geometry
     shark, intersects,intersects2, time, delta, moveDistance, rotateAngle, rotation_matrix,
     loader, waterGeometry,sky, uniforms, parameters, cubeCamera, theta, phi, normal, position,
     shark2, topCamera, SCREEN_HEIGHT, SCREEN_WIDTH, ASPECT,VIEW_ANGLE, NEAR, FAR,hit = 0,
-    bulletCount=11,distance,frames4=0,frames3=0,viewport2=false,frames =0,frames2 =0,shootbomb2,
+    bulletCount=11,distance,frames4=0,frames3=0,frames =0,frames2 =0,shootbomb2,
     shootbullet2=false,position2,bulletCount2=16,meshArray2=[],master_shootbomb2,hit2=0,
     bulletLeft = true,bulletLeft2=true,relativeCameraOffset,cameraOffset, $elie = $("#box"),
-    degree = 0,timer;
+    degree = 0,timer,bulletover = false,bullet2over=false;
 
 //Declaring Short Forms
 let keyboard = new THREEx.KeyboardState();
@@ -249,15 +249,6 @@ function onKeyDown(e) {
         }, 1)
     }
 
-if(e.keyCode == 67){
-    viewport2 = true;
-renderer.render(scene, topCamera);
-}
-
-if(e.keyCode == 86){
-   viewport2 = false;
-}
-
 if (e.keyCode == 32) { //space bar
     missile_sound.play();
     if (shootbullet) {
@@ -265,7 +256,7 @@ if (e.keyCode == 32) { //space bar
         setTimeout(() => {
             shootbullet = false;
             scene.remove(shootbomb);
-        }, 1500);
+        }, 1000);
 
     }
 
@@ -273,7 +264,9 @@ if (e.keyCode == 32) { //space bar
 
         $("#"+bulletCount).hide();
         bulletCount++;
+       
         if(bulletCount == 16){
+            bulletover = true;
             bulletCount=69;
             bulletLeft = false;
            
@@ -313,7 +306,7 @@ missile_sound.play();
         setTimeout(() => {
             shootbullet2 = false;
             scene.remove(shootbomb);
-        }, 1500);
+        }, 1000);
 
     }
 
@@ -322,6 +315,7 @@ missile_sound.play();
         $("#"+bulletCount2).hide();
         bulletCount2++;
         if(bulletCount2 == 21){
+            bullet2over = true;
             bulletCount2=69;
             bulletLeft2 = false;
 
@@ -463,7 +457,7 @@ function update() {
             setTimeout(() => {
                 shootbullet = false;
                 scene.remove(shootbomb);
-            }, 1500);
+            }, 1000);
 
             shootbomb.position.set(position);
         }
@@ -480,7 +474,7 @@ function update() {
             setTimeout(() => {
                 shootbullet2 = false;
                 scene.remove(shootbomb2);
-            }, 1500);
+            }, 1000);
 
             shootbomb2.position.set(position2);
         }
@@ -541,6 +535,27 @@ function render() {
     pivotPoint.rotation.y += 0.01;
     pivotPoint2.position.set(finalship2.position.x, finalship2.position.y, finalship2.position.z)
     pivotPoint2.rotation.y += 0.01;
+
+     //Bullets finished
+     if(bulletover && bullet2over)
+     {
+         bulletover = false;
+         bullet2over = false;
+         bulletCount = 11;
+         bulletCount2 = 16;
+         bulletLeft = true;
+         bulletLeft2 = true;
+         $("#11").show();
+         $("#12").show();
+         $("#13").show();
+         $("#14").show();
+         $("#15").show();
+         $("#16").show();
+         $("#17").show();
+         $("#18").show();
+         $("#19").show();
+         $("#20").show();
+     }
 
          //Adjusting Ship hits and Jerk of Ships(Ship1 to Ship2)
          if(hit==1)
