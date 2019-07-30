@@ -30,7 +30,7 @@ body canvas{
 
   #innerModal{
 
-    background: url("/images/Innerinfo.png") no-repeat center;
+    background: url("./images/Innerinfo.png") no-repeat center;
     z-index: 999999999;
     background-size: 70%;
     text-align: center;
@@ -178,7 +178,7 @@ color: green;
 #box {
     height: 200px;
     width: 200px;
-    background:url("/images/wheel.png") center;
+    background:url("./images/wheel.png") center;
     position: absolute;
     background-size:100%; 
     top: 65%;
