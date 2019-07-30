@@ -56,6 +56,8 @@ An adventures game of battling ships!
 
 ![image](https://user-images.githubusercontent.com/51989436/62132817-64d92a80-b2fb-11e9-87a3-a4aa397a87e3.png)
 
+![image](https://user-images.githubusercontent.com/51989436/62134186-ad91e300-b2fd-11e9-8fc4-cedfa6d3c089.png)
+
 ## Contributors
 1. [Aditi Sitoke](https://www.linkedin.com/in/aditi-sitoke-54805613a/)
 2. [Aniket Soni](https://www.linkedin.com/in/aniket-soni-sbg/)
