@@ -10,6 +10,7 @@ An adventures game of battling ships!
 * [User Interface](#user-interface)
 * [Contributors](#contributors)
 * [References](#references)
+* [Project Link](#project-link)
 * [Source Code](#source-code)
 
 ## Game Description
@@ -17,14 +18,16 @@ An adventures game of battling ships!
 * Pirates of the Caribbean is an adventure-role playing game, in which players are battling with their ships in order to save their island.
 
 ### Features
-* Single screen with Multi player is available.
-* Multi screen with Multi player is currently in process.
+* Single screen on single machine with Multi player is available.
+* Multi screen on single machine with Multi player is available.
+* Multi screen on different machines with multi player is currently in process.
 * The battling ship is named as "Black Pearl".
+* Name of players are also available on screen.
 * Each ship will have five bullets to defend themselfves from enemy.
 * Each ship will only be provided with "three" lives only.
 * The ship which destroy the another ship by attacking five bullets ,will win the game.
 * Press "c" key for enabling viewport and "V" to disable it.
-* There will be one icon available at left side for help and instructions related to the game.
+* There will be one icon available at top center for help and instructions related to the game.
 
 #### CONTROLS FOR PLAYER 1
 
@@ -53,10 +56,10 @@ An adventures game of battling ships!
 ### Hardware:
 
 * Processor (CPU) with 2 gigahertz (GHz) frequency or above
-* A minimum of 2 GB of RAM
+* A minimum of 4 GB of RAM
 * Monitor Resolution 1024 X 768 or higher
 * Internet Connection Broadband (high-speed) with a speed of 4 Mbps or more
-* Keyboard and a Microsoft Mouse or some other compatible pointing device
+* Keyboard and a Microsoft Mouse 
 * Sound card
 * Speakers or headphones
 
@@ -66,7 +69,6 @@ An adventures game of battling ships!
 * Edge 20+
 * Mozilla Firefox 31+
 * Internet Explorer 11+ (Windows only)
-* Safari 6+ (MacOS only)
 
 ## Application
 
@@ -80,6 +82,7 @@ An adventures game of battling ships!
 
 ### Application Structure :
 Our project application consist of following parts and subparts:	
+
 ## Technologies
 
  This Project is created with the use of following technologies:
@@ -119,6 +122,9 @@ These snapshots are based on the display of the game.
 * ANIMATIONS    : www.sketchfab.com     
 * FIREBASE      : www.firebase.google.com
 * TUTORIALS     : www.youtube.com ,www.google.com
+
+## Project Link
+
 
 ## Source Code
 [Git Link](https://github.com/piratesteam/POC)
