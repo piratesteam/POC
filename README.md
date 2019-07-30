@@ -6,12 +6,11 @@ An adventures game of battling ships!
 * [Game Description](#game-description)
 * [Requirement Specification](#requirement-specification)
 * [Application](#application)
-* [Design Schema](#design-schema)
 * [Technologies](#technologies)
 * [User Interface](#user-interface)
 * [Contributors](#contributors)
 * [References](#references)
-* [Source Code Link](#sourcecode-link)
+* [Source Code](#source-code)
 
 ## Game Description
  Pirates of the Caribbean is an adventure-role playing game, in which players are battling with their ships in order to save their island.<br>The battling ship is named as "Black Pearl" . <br>Pirates of Caribbean is a multiplayer game in which players fight the battle with their ships, each ship have five bullets to defend themself from enemy and will only be provided with only "One" life.
@@ -43,8 +42,6 @@ An adventures game of battling ships!
 * Safari 6+ (MacOS only)
 
 ## Application
-
-## Design Schema
 	
 ## Technologies
  This Project is created with the use of following technologies:
@@ -55,7 +52,7 @@ An adventures game of battling ships!
 * Firebase 
 
 ## User Interface
-
+![image](https://user-images.githubusercontent.com/51989436/62132345-8685e200-b2fa-11e9-8c41-350d0d8b20be.png)
 ## Contributors
 1. [Aditi Sitoke](https://www.linkedin.com/in/aditi-sitoke-54805613a/)
 2. [Aniket Soni](https://www.linkedin.com/in/aniket-soni-sbg/)
@@ -64,11 +61,11 @@ An adventures game of battling ships!
 5. [Shashiraj Sendhav](https://www.linkedin.com/in/shashiraj-sendhav-966a7b175/)
 6. [Shivani Mehto](https://www.linkedin.com/in/shivani-mehto-741844157/)
  
-## References :
+## References
 * RENDERING     : www.threejs.org
 * ANIMATIONS    : www.sketchfab.com     
 * FIREBASE      : www.firebase.google.com
 * TUTORIALS     : www.youtube.com ,www.google.com
 
-## Source Code :
+## Source Code
 [Git Link](https://github.com/piratesteam/POC)
