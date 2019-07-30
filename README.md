@@ -24,7 +24,7 @@ An adventures game of battling ships!
 * The battling ship is named as "Black Pearl".
 * Name of players are also available on screen.
 * Each ship will have five bullets to defend themselfves from enemy.
-* Each ship will only be provided with "three" lives only.
+* Each ship will be provided with "three" lives only.
 * The ship which destroy the another ship by attacking five bullets ,will win the game.
 * Press "c" key for enabling viewport and "V" to disable it.
 * There will be one icon available at top center for help and instructions related to the game.
@@ -59,26 +59,23 @@ An adventures game of battling ships!
 * A minimum of 4 GB of RAM
 * Monitor Resolution 1024 X 768 or higher
 * Internet Connection Broadband (high-speed) with a speed of 4 Mbps or more
-* Keyboard and a Microsoft Mouse 
+* Keyboard and a Mouse 
 * Sound card
 * Speakers or headphones
 
 ### Browsers:
 
-* Chrome 36+
-* Edge 20+
-* Mozilla Firefox 31+
+* Chrome
+* Mozilla Firefox
 * Internet Explorer 11+ (Windows only)
 
 ## Application
 
 * In the fast growing field of software engineering and development and even more rapidly growing sector of game development the future is hard to predict.
-* We are working with this game as our major project and as a part of our assesment we got this type of work for doing better with development cycle, development period,graphics, scripting, adopting new technology, animation.
-* In general software project is a project focusing on the creation of software.
-* Consequently,Success can be measured by taking a look at the resulting software.
-* In a game project, the product is a game But here comes the point: A game is much more than just its software. It has to provide content to become enjoyable. Just like a web server: without content the server is useless, and the quality cannot be measured. 
-* This has an important effect on the game project as a whole. The software part of the project is not the only one, and it must be considered in connection to all other parts.
-* The environment of the game, the story, characters, game plays, the artwork, and so on.
+* We are working on this game as our major project and as a part of our assesment.
+* With this type of work, we can do better with development cycle, development period,graphics, scripting, adopting new technology, animation.
+* In a game project, the product is a game But here comes the point: A game is much more than just a software. It has to provide content to become enjoyable. Just like a web server: without content the server is useless, and the quality cannot be measured. 
+* This has an important effect on the game project as a whole. The software part of the project is not the only one, and it must be considered in connection to all other parts like the environment of the game, the story, characters, game plays, the artwork, and so on.
 
 ### Application Structure :
 Our project application consist of following parts and subparts:	
@@ -95,7 +92,7 @@ Our project application consist of following parts and subparts:
 
 ## User Interface
 
-Every game must has a menu so it can be user friendly enough and gamers can easily fulfill their need. 
+Every game must has a menu so it can be user friendly and gamers can easily fulfill their needs. 
 User interface is also an important thing while creating the SRS document section.
 In this SRS document part; we have used the menu snapshots in the user manual part. 
 These snapshots are based on the display of the game. 
