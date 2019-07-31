@@ -74,7 +74,7 @@ An adventures game of battling ships!
 * In the fast growing field of software engineering and development and even more rapidly growing sector of game development the future is hard to predict.
 * We are working on this game as our major project and as a part of our assesment.
 * With this type of work, we can do better with development cycle, development period,graphics, scripting, adopting new technology, animation.
-* In a game project, the product is a game But here comes the point: A game is much more than just a software. It has to provide content to become enjoyable. Just like a web server: without content the server is useless, and the quality cannot be measured. 
+* In a game project, the product is a game but here comes a point: A game is much more than just a software. It has to provide content to become enjoyable. Just like a web server: without content the server is useless, and the quality cannot be measured. 
 * This has an important effect on the game project as a whole. The software part of the project is not the only one, and it must be considered in connection to all other parts like the environment of the game, the story, characters, game plays, the artwork, and so on.
 
 ### Application Structure :
@@ -105,6 +105,7 @@ These snapshots are based on the display of the game.
 
 ![image](https://user-images.githubusercontent.com/51989436/62134310-e16d0880-b2fd-11e9-8bc3-f371e6882834.png)
 
+![image](https://user-images.githubusercontent.com/51989436/62190678-97ccfe00-b38f-11e9-9141-c8ba927b83b6.png)
 
 ## Contributors
 1. [Aditi Sitoke](https://www.linkedin.com/in/aditi-sitoke-54805613a/)
