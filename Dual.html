@@ -22,10 +22,20 @@
     integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" 
     crossorigin="anonymous"></script>
     <link rel="stylesheet" href="css/modal.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
 
+<script>
+	$(window).load(function() {
+		// Animate loader off screen
+		$(".se-pre-con").fadeOut("slow");;
+	});
+</script>
 </head>
 
 <body>
+
+        <div class="se-pre-con"></div>
 
         <audio id="game_sound" autoplay loop>
                 <source src="./music/game_sound.mp3" type="audio/mpeg">
