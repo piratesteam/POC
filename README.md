@@ -26,15 +26,15 @@ An adventures game of battling ships!
 * Each ship will have five bullets to defend themselfves from enemy.
 * Each ship will be provided with "three" lives only.
 * The ship which destroy the another ship by attacking five bullets ,will win the game.
-* Press "c" key for enabling viewport and "V" to disable it.
+* Press "c" key for enabling viewport and "v" to disable it.
 * There will be one icon available at top center for help and instructions related to the game.
 
 #### CONTROLS FOR PLAYER 1
 
-- Press "W" key for moving forward
-- Press "A" for left rotation
-- Press "S" for moving backward
-- Press "D" for right rotation
+- Press "w" key for moving forward
+- Press "a" for left rotation
+- Press "s" for moving backward
+- Press "d" for right rotation
 - Press "spacebar" for bullet shoot
 
 #### CONTROLS FOR PLAYER 2
@@ -55,7 +55,7 @@ An adventures game of battling ships!
 
 ### Hardware:
 
-* Processor (CPU) with 2 gigahertz (GHz) frequency or above
+* Processor:minimum i3 core above 4th generation (recommended i5)
 * A minimum of 4 GB of RAM
 * Monitor Resolution 1024 X 768 or higher
 * Internet Connection Broadband (high-speed) with a speed of 4 Mbps or more
@@ -78,7 +78,10 @@ An adventures game of battling ships!
 * This has an important effect on the game project as a whole. The software part of the project is not the only one, and it must be considered in connection to all other parts like the environment of the game, the story, characters, game plays, the artwork, and so on.
 
 ### Application Structure :
-Our project application consist of following parts and subparts:	
+Our project application consist of following parts and subparts:
+
+![image](https://user-images.githubusercontent.com/51989436/62191503-3574fd00-b391-11e9-97eb-ae889e4bc99e.png)
+
 
 ## Technologies
 
@@ -122,7 +125,7 @@ These snapshots are based on the display of the game.
 * TUTORIALS     : www.youtube.com ,www.google.com
 
 ## Project Link
-
+[Game Link](https://piratesteam.github.io/POC/index.html)
 
 ## Source Code
 [Git Link](https://github.com/piratesteam/POC)
