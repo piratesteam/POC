@@ -277,6 +277,7 @@ function onKeyDown(e) {
         missile_sound.play();
         if(shootbomb){
             bulletArray.remove(shootbomb);
+            shootbomb = undefined;
         }
         if (NoOfBulletPlayer1 != 0) {
 
@@ -311,6 +312,7 @@ function onKeyDown(e) {
             if (secondShootbomb) {
     
                 bulletArray2.remove(secondShootbomb);
+                secondShootbomb = undefined;
             }
     
                 if (NoOfBulletPlayer2 != 0) {
@@ -545,7 +547,7 @@ function update() {
          if (intersects.length > 0) {
             hit++;
             hit_sound.play();
-            scene.remove(shootbomb);
+            bulletArray.remove(shootbomb);
             shootbomb=undefined;
         }
 
@@ -560,8 +562,8 @@ function update() {
          if (intersects.length > 0) {
             secondHit++;
             hit_sound.play();
-            scene.remove(secondShootbomb);
-            secondShootbomb=undefined;
+            bulletArray2.remove(secondShootbomb);
+            secondShootbomb = undefined;
         }
 
       }
