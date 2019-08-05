@@ -7,9 +7,9 @@
     <meta name="viewport" content="width=device-width, 
     user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <link rel="shortcut icon" type="image/png" href="./favicon.png"/>
+    <link rel="shortcut icon" type="image/png" href="./favicon.png" />
     <link rel="stylesheet" href="css/reset.css">
-    
+
     <script src="js/keyboard.js"></script>
     <script src="js/three.js"></script>
     <script src="js/sky.js"></script>
@@ -18,93 +18,115 @@
     <script src="js/GLTFLoader.js"></script>
     <script src="js/Detector.js"></script>
     <script src="js/THREEx.WindowResize.js"></script>
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js" 
-    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" 
-    crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="css/modal.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
-    
-    
+
+
     <script>
-    $(window).load(function() {
-		// Animate loader off screen
-		$(".se-pre-con").fadeOut("slow");;
-	});
+        $(window).load(function () {
+            // Animate loader off screen
+            $(".se-pre-con").fadeOut("slow");;
+        });
     </script>
 
 </head>
 
 <body>
 
-        <div class="se-pre-con"></div>
+    <div class="se-pre-con"></div>
 
     <audio id="game_sound" autoplay loop>
         <source src="./music/game_sound.mp3" type="audio/mpeg">
-   </audio>
+    </audio>
 
-<audio id="missile_sound">
+    <audio id="missile_sound">
         <source src="./music/missile.mp3" type="audio/mpeg">
-</audio>
-<audio id="sea_sound">
-    <source src="./music/sea_sound.mp3" type="audio/mpeg">
-</audio>
-<audio id="blast_sound">
-    <source src="./music/boom_bang.mp3" type="audio/mpeg">
-</audio>
-<audio id="hit_sound">
-    <source src="./music/hit.mp3" type="audio/mpeg">
-</audio>
+    </audio>
+    <audio id="sea_sound">
+        <source src="./music/sea_sound.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="blast_sound">
+        <source src="./music/boom_bang.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="hit_sound">
+        <source src="./music/hit.mp3" type="audio/mpeg">
+    </audio>
+
+    <audio id="collect1_sound">
+        <source src="./music/collect1.mp3" type="audio/mpeg">
+    </audio>
+
+    <audio id="collect2_sound">
+        <source src="./music/collect3.mp3" type="audio/mpeg">
+    </audio>
 
     <a href="#openModal" id="#Modal">
         <img src="images/info.png" alt="" width="50" height="50">
     </a>
 
     <div id="openModal" class="modalDialog">
-        <div id = "innerModal"> <a href="#close" title="Close" class="close">X</a>
-            <img id = "text" class = "text" src="images/innerText.png">
+        <div id="innerModal"> <a href="#close" title="Close" class="close">X</a>
+            <img id="text" class="text" src="images/innerText.png">
         </div>
     </div>
 
     <div id="box"></div>
 
-    <div id = "playername1"></div>
-    <div id = "playername2"></div>
+    <div id="playername1"></div>
+    <div id="playername2"></div>
     <!-- healthpoint -->
     <br>
 
-    <div class ="main" style = "background : url(images/Boat.png)">
+    <div class="main" style="background : url(images/Boat.png)">
         <img class="health" id="1" src="images/Boat.png">
         <img class="health" id="2" src="images/Boat.png">
         <img class="health" id="3" src="images/Boat.png">
-    
+
     </div>
 
-    <div class ="main2" >
+    <div class="main2">
         <img class="health" id="4" src="images/Boat.png">
         <img class="health" id="5" src="images/Boat.png">
         <img class="health" id="6" src="images/Boat.png">
-            </div>	
-        
-        
-        </div>
-<br>
+    </div>
+
+
+    </div>
+    <br>
     <!-- bullet left -->
-<div class="life-left">
-    <img class="bullet" id="11" src="images/Group.png">
-    <img class="bullet" id="12" src="images/Group.png">
-    <img class="bullet" id="13" src="images/Group.png">
-    <img class="bullet" id="14" src="images/Group.png">
-    <img class="bullet" id="15" src="images/Group.png">
-</div>
-<!-- bullet right -->
-<div class="life-right">
-    <img class="bullet" id="16" src="images/Group.png">
-    <img class="bullet" id="17" src="images/Group.png">
-    <img class="bullet" id="18" src="images/Group.png">
-    <img class="bullet" id="19" src="images/Group.png">
-    <img class="bullet" id="20" src="images/Group.png">
-</div>
+    <div class="life-left">
+        <img class="bullet" id="11" src="images/Group.png">
+        <img class="bullet" id="12" src="images/Group.png">
+        <img class="bullet" id="13" src="images/Group.png">
+        <img class="bullet" id="14" src="images/Group.png">
+        <img class="bullet" id="15" src="images/Group.png">
+    </div>
+
+
+    <!-- bullet right -->
+    <div class="life-right">
+        <img class="bullet" id="16" src="images/Group.png">
+        <img class="bullet" id="17" src="images/Group.png">
+        <img class="bullet" id="18" src="images/Group.png">
+        <img class="bullet" id="19" src="images/Group.png">
+        <img class="bullet" id="20" src="images/Group.png">
+    </div>
+
+
+    <div class="coin1">
+        <img class="health" id="4" src="images/coin.png">
+        <p id="player1coin">0</p>
+
+    </div>
+
+    <div class="coin2">
+        <p id="player2coin">0</p>
+        <img class="health" id="4" src="images/coin.png">
+
+    </div>
 
     <div id="container"></div>
 

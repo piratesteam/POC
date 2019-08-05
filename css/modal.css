@@ -217,3 +217,40 @@ color: green;
     z-index: 9999;
     background: url(../images/load.gif) center no-repeat #fff;
   }
+
+  #gameAvtar{
+    border-radius: 25px;
+  }
+
+  .coin1{
+    float:left;
+    margin-left:10px;
+    margin-top:5px;
+    font-weight:bold;
+
+    color:rgb(148, 255, 175);
+  }
+
+  .coin2{
+    float:right;
+    margin-right:10px;
+    margin-top:5px;
+    font-weight:bold;
+
+    color:rgb(148, 255, 175);
+
+  }
+
+  #player1coin{
+    float:right;
+    font-size:20px;
+    padding-top:5px;
+    padding-left:5px;
+  }
+
+  #player2coin{
+    float:left;
+    font-size:20px;
+    padding-top:5px;
+    padding-right:5px;
+  }

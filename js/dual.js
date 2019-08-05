@@ -29,6 +29,19 @@ let missile_sound = document.getElementById("missile_sound");
 let sea_sound = document.getElementById("sea_sound");
 let blast_sound = document.getElementById("blast_sound");
 let hit_sound = document.getElementById("hit_sound");
+let collect1_sound = document.getElementById("collect1_sound");
+let collect2_sound = document.getElementById("collect2_sound");
+
+
+// logics
+let BULLET = new THREE.Group();
+let POWER_BOX, Power_Box;
+let NoOfBulletPlayer1 = 5, NoOfBulletPlayer2 = 5;
+let scorePlayer1 = 0, scorePlayer2 = 0;
+let TRESURE_BOX, Treasure_Box;
+let COINS, coins;
+let score_playerA = 0, scorePlayerB = 0;
+
 
 //Initialization
 function init() {
@@ -114,15 +127,52 @@ function init() {
 
     //Initializing Models
 
+
+
+
+       //bullet
+       let bullet_temp = new THREE.Mesh(new THREE.CylinderGeometry(0.8, 0.8, 3, 32), new THREE.MeshBasicMaterial({ color: 'black' }));
+       bullet_temp.rotation.x = -Math.PI / 2;
+       BULLET.add(bullet_temp)
+   
+       //Power box
+       POWER_BOX = new THREE.Mesh(new THREE.BoxGeometry(10, 10, 10), new THREE.MeshBasicMaterial({ color: 'yellow' }));
+       addPowerBox();
+     
+       
+    //Mountain
+    loader = new THREE.GLTFLoader();
+    loader.load('models/mountain/scene.gltf', function (gltf) {
+        gltf.scene.position.set(0, 0, 0);
+        scene.add(gltf.scene);
+    });
+
+    //Treasure Box
+    loader = new THREE.GLTFLoader();
+    loader.load('models/treasure/scene.gltf', function (gltf) {
+
+        gltf.scene.position.set(0, 5, -80);
+        gltf.scene.scale.x = 0.035;
+        gltf.scene.scale.y = 0.035;
+        gltf.scene.scale.z = 0.035;
+        TRESURE_BOX = gltf.scene;
+    });
+
+    //coins conatiner
+    COINS = new THREE.Mesh(new THREE.BoxGeometry(10, 10, 10), new THREE.MeshBasicMaterial({ color: 0x00ff00, opacity: 0.5, transparent: true, }));
+    addCoins();
+
+
     //Bomb
     loader = new THREE.GLTFLoader();
-    loader.load('models/bomb/scene.gltf', function(gltf) {
-        gltf.scene.traverse(function(child) {
-            child.rotateOnAxis(new THREE.Vector3(0, 1, 0), -Math.PI);
+    loader.load('models/bomb/scene.gltf', function (gltf) {
+        gltf.scene.traverse(function (child) {
+            child.rotateOnAxis(new THREE.Vector3(1, 1, 0), Math.PI / 4);
             master_shootbomb = new THREE.Group();
             master_shootbomb.add(child);
-            scene.add(master_shootbomb);
-
+            master_shootbomb.scale.x = 10;
+            master_shootbomb.scale.y = 10;
+            master_shootbomb.scale.z = 10;
         });
 
     });
@@ -174,8 +224,8 @@ function init() {
     normal = loader.load("./models/ship/Galleon.jpg");
     loader = new THREE.TDSLoader();
     loader.setResourcePath("Objects/");
-    loader.load("models/ship/Galleon.3ds", function(object) {
-        object.traverse(function(child) {
+    loader.load("models/ship/Galleon.3ds", function (object) {
+        object.traverse(function (child) {
             if (child.isMesh) {
                 meshArray2.push(child);
                 child.material.normalMap = normal;
@@ -184,19 +234,23 @@ function init() {
         ship = object; //local to global
         ship.name = localStorage["player1"];
         ship.rotation.x = -Math.PI / 2; //back to front
-        ship.rotation.z = Math.PI/2; //opposite direction
-        // camera.position.z = ship.position.z + 60; //initial camera position
+        ship.rotation.z = (Math.PI / 2); //opposite direction
+        camera.position.z = ship.position.z + 120; //initial camera position
         finalship.add(ship);
         finalship.add(pivotPoint);
+        finalship.name = 'player1';
     });
+
+
+
 
     //Ship 2
     loader = new THREE.TextureLoader();
     normal = loader.load("./models/ship/Galleon.jpg");
     loader = new THREE.TDSLoader();
     loader.setResourcePath("Objects/");
-    loader.load("models/ship/Galleon.3ds", function(object) {
-        object.traverse(function(child) {
+    loader.load("models/ship/Galleon.3ds", function (object) {
+        object.traverse(function (child) {
             if (child.isMesh) {
                 meshArray.push(child);
                 child.material.normalMap = normal;
@@ -204,15 +258,15 @@ function init() {
         });
         ship2 = object; //local to global
         ship2.name = localStorage["player2"];
-        ship2.rotation.x = -Math.PI/2; //back to front
-        ship2.rotation.z = -Math.PI/2; //opposite direction
-        // topCamera.position.z = ship.position.z + 60; //initial camera position
+        ship2.rotation.x = -Math.PI / 2; //back to front
+        ship2.rotation.z = -Math.PI / 2; //opposite direction
+        topCamera.position.z = ship.position.z + 60; //initial camera position
         bGroup2.add(ship2);
         finalship2.add(bGroup2);
         finalship2.add(pivotPoint2);
-        finalship2.position.set(60, 0, 60);
+        finalship2.position.set(40, 0, 0);
+        finalship2.name = 'player2';
     });
-
 
     //Adding Ships to scene
     scene.add(finalship);
@@ -257,10 +311,11 @@ function update() {
     }
 
     //Bullet 1 Shooting
+   
     if (keyboard.pressed("space")) { //space
         missile_sound.play();
         if (shootbullet) {
-            
+
             setTimeout(() => {
                 shootbullet = false;
                 scene.remove(shootbomb);
@@ -270,36 +325,34 @@ function update() {
 
         if (shootbullet == false && bulletLeft) {
 
-            $("#"+bulletCount).hide();
-            bulletCount++;
-            if(bulletCount == 16){
-                bulletCount=69;
-                bulletover = true;
-                bulletLeft = false;
-               
+            if (NoOfBulletPlayer1 != 0) {
+                NoOfBulletPlayer1--;
+
+                // shootbomb = master_shootbomb.clone();
+                shootbomb = BULLET.clone();
+                // shootbomb = group.clone();
+                scene.add(shootbomb);
+
+                shootbomb.rotation = finalship.rotation;
+
+
+
+
+                shootbomb.position.x = finalship.position.x;
+                shootbomb.position.z = finalship.position.z;
+                shootbomb.position.y = 4;
+
+
+                if (finalship.rotation.z == 0)
+                    shootbomb.rotation.y = finalship.rotation.y;
+                else
+                    shootbomb.rotation.y = -finalship.rotation.y + Math.PI;
+
+                position = new THREE.Vector3(finalship.position.x, finalship.position.y, finalship.position.z);
+
+                shootbullet = true;
+
             }
-            
-            shootbomb = master_shootbomb.clone();
-            scene.add(shootbomb);
-
-            shootbomb.scale.x = 5; //scaling x
-            shootbomb.scale.y = 5; //scaling y
-            shootbomb.scale.z = 5; //scaling y
-
-
-            shootbomb.position.x = finalship.position.x;
-            shootbomb.position.z = finalship.position.z;
-            shootbomb.position.y = 4;
-
-            if (finalship.rotation.z == 0)
-                shootbomb.rotation.y = finalship.rotation.y;
-            else
-                shootbomb.rotation.y = -finalship.rotation.y + Math.PI;
-
-            position = new THREE.Vector3(finalship.position.x, finalship.position.y, finalship.position.z);
-
-            shootbullet = true;
-
         }
 
     }
@@ -307,60 +360,53 @@ function update() {
     //Bullet 2 Shooting
     if (keyboard.pressed("P")) { //P
         missile_sound.play();
-            if (shootbullet2) {
-    
-                setTimeout(() => {
-                    shootbullet2 = false;
-                    scene.remove(shootbomb);
-                }, 1000);
-    
-            }
+        if (shootbullet2) {
+
+            setTimeout(() => {
+                shootbullet2 = false;
+                scene.remove(shootbomb);
+            }, 1000);
+
+        }
     
             if (shootbullet2 == false && bulletLeft2) {
+                if (NoOfBulletPlayer2 != 0) {
+                    NoOfBulletPlayer2--;
     
-                $("#"+bulletCount2).hide();
-                bulletCount2++;
-                if(bulletCount2 == 21){
-                    bulletCount2=69;
-                    bulletLeft2 = false;
-                    bullet2over = true;
+                    shootbomb2 = BULLET.clone();
+                    scene.add(shootbomb2);
+                    
+    
+    
+                    shootbomb2.position.x = finalship2.position.x;
+                    shootbomb2.position.z = finalship2.position.z;
+                    shootbomb2.position.y = 4;
+    
+                    if (finalship2.rotation.z == 0)
+                        shootbomb2.rotation.y = finalship2.rotation.y;
+                    else
+                        shootbomb2.rotation.y = -finalship2.rotation.y + Math.PI;
+    
+                    position2 = new THREE.Vector3(finalship2.position.x, finalship2.position.y, finalship2.position.z);
+    
+                    shootbullet2 = true;
     
                 }
-               
-                shootbomb2 = master_shootbomb2.clone();
-                scene.add(shootbomb2);
-    
-                shootbomb2.scale.x = 5; //scaling x
-                shootbomb2.scale.y = 5; //scaling y
-                shootbomb2.scale.z = 5; //scaling y
-    
-    
-                shootbomb2.position.x = finalship2.position.x;
-                shootbomb2.position.z = finalship2.position.z;
-                shootbomb2.position.y = 4;
-    
-                if (finalship2.rotation.z == 0)
-                    shootbomb2.rotation.y = finalship2.rotation.y;
-                else
-                    shootbomb2.rotation.y = -finalship2.rotation.y + Math.PI;
-    
-                position2 = new THREE.Vector3(finalship2.position.x, finalship2.position.y, finalship2.position.z);
-    
-                shootbullet2 = true;
     
             }
+    
     
         }
 
     //Movement Forward and Backward Ship 1
     if (keyboard.pressed("W")){
          sea_sound.play();
-         finalship.translateX(moveDistance*1.2);
+         finalship.translateX(moveDistance*1.5);
         
     }
     if (keyboard.pressed("S")) {
         sea_sound.play();
-        finalship.translateX(-moveDistance*1.2);
+        finalship.translateX(-moveDistance*1.5);
        
     }
     //Rotate left/right Ship 1
@@ -378,11 +424,11 @@ function update() {
     //Movement Forward and Backward Ship 2
     if (keyboard.pressed("up")){
          sea_sound.play();
-         finalship2.translateX(-moveDistance*1.2);
+         finalship2.translateX(-moveDistance*1.5);
     }
     if (keyboard.pressed("down")) {
         sea_sound.play();
-        finalship2.translateX(moveDistance*1.2);
+        finalship2.translateX(moveDistance*1.5);
          
     }
 
@@ -399,7 +445,7 @@ function update() {
 
 
     //Look At ship 1 Camera
-    relativeCameraOffset = new THREE.Vector3(-40, 10, 5);
+    relativeCameraOffset = new THREE.Vector3(-70, 10, 5);
     cameraOffset = relativeCameraOffset.applyMatrix4(finalship.matrixWorld);
     camera.position.x = cameraOffset.x;
     camera.position.y = cameraOffset.y;
@@ -407,7 +453,7 @@ function update() {
     camera.lookAt(finalship.position);
 
     //Look At Ship 2 Camera
-    var relativeCameraOffset2 = new THREE.Vector3(40, 10, 5);
+    var relativeCameraOffset2 = new THREE.Vector3(70, 10, 5);
     var cameraOffset2 = relativeCameraOffset2.applyMatrix4(finalship2.matrixWorld);
     topCamera.position.x = cameraOffset2.x;
     topCamera.position.y = cameraOffset2.y;
@@ -443,41 +489,138 @@ function update() {
     shootbomb2.translateZ(moveDistance * 12);
 
 
-    // Collision Detection by Raycasting (Ship1 to Ship2)
-    if (position && shootbomb) {
-        raycaster.set(shootbomb.position, direction.subVectors(position, shootbomb.position).normalize());
-        raycaster.far = far.subVectors(position, shootbomb.position).length();
+   
+    
+
+    if (Power_Box) {
+        //    console.log(Power_Box);
+        var originPoint = Power_Box.position.clone();
+
+        for (var vertexIndex = 0; vertexIndex < Power_Box.geometry.vertices.length; vertexIndex++) {
+            var localVertex = Power_Box.geometry.vertices[vertexIndex].clone();
+            var globalVertex = localVertex.applyMatrix4(Power_Box.matrix);
+            var directionVector = globalVertex.sub(Power_Box.position);
+
+            var raycast = new THREE.Raycaster(originPoint, directionVector.clone().normalize());
+            var Allmesh = meshArray.concat(meshArray2);
+
+            var collisionResults = raycast.intersectObjects(Allmesh);
+            if (collisionResults.length > 0) {
+                scene.remove(Power_Box);
+                Power_Box = undefined;
+                scene.remove(PowerObj)
+                PowerObj = undefined;
+                collect1_sound.play();
+                console.log(collisionResults[0].object.parent.parent);
+                if (collisionResults[0].object.parent.parent.name == "player1") {
+
+                    NoOfBulletPlayer1 = 5;
+                    scorePlayer1 += 100;
+
+                } else
+                    if (collisionResults[0].object.parent.parent.parent.name == "player2") {
+                        NoOfBulletPlayer2 = 5;
+                        scorePlayer2 += 100;
+                    }
+
+
+
+            }
+        }
+    }
+
+
+
+
+    if (coins) {
+        //    console.log(Power_Box);
+        var originPoint = coins.position.clone();
+
+        for (var vertexIndex = 0; vertexIndex < coins.geometry.vertices.length; vertexIndex++) {
+            var localVertex = coins.geometry.vertices[vertexIndex].clone();
+            var globalVertex = localVertex.applyMatrix4(coins.matrix);
+            var directionVector = globalVertex.sub(coins.position);
+
+            var raycast = new THREE.Raycaster(originPoint, directionVector.clone().normalize());
+            var Allmesh = meshArray.concat(meshArray2);
+
+            var collisionResults = raycast.intersectObjects(Allmesh);
+            if (collisionResults.length > 0) {
+                scene.remove(coins);
+                coins = undefined;
+                scene.remove(coinsOBJ);
+                coinsOBJ = undefined;
+                collect2_sound.play();
+                console.log(collisionResults[0].object.parent.parent);
+                if (collisionResults[0].object.parent.parent.name == "player1") {
+                    scorePlayer1 += 500;
+                    console.log("player1 score:" + scorePlayer1)
+
+                } else
+                    if (collisionResults[0].object.parent.parent.parent.name == "player2") {
+                        scorePlayer2 += 500;
+                        console.log("player2 score:" + scorePlayer2)
+                    }
+
+
+
+            }
+        }
+    }
+
+
+
+
+
+
+
+    if (shootbomb) {
+        position = shootbomb.position.clone();
+        position.z += 4;
+        raycaster.set(shootbomb.position, direction.subVectors(shootbomb.position, position).normalize());
+        raycaster.far = far.subVectors(shootbomb.position, position).length();
         intersects = raycaster.intersectObjects(meshArray);
-        
         if (intersects.length > 0) {
+            console.log(intersects[0])
+            scorePlayer1 += 1000;
             hit++;
             hit_sound.play();
-            setTimeout(() => {
-                shootbullet = false;
-                scene.remove(shootbomb);
-            }, 1000);
-
-            shootbomb.position.set(position);
+            scene.remove(shootbomb);
+            shootbomb = undefined;
         }
 
     }
-    // Collision Detection by Raycasting (Ship2 to Ship1)
-    if (position2 && shootbomb2) {
-        raycaster.set(shootbomb2.position, direction.subVectors(position2, shootbomb2.position).normalize());
-        raycaster.far = far.subVectors(position2, shootbomb2.position).length();
-        intersects2 = raycaster.intersectObjects(meshArray2);
-        if (intersects2.length > 0) {
+
+
+
+    if (shootbomb2) {
+        position2 = shootbomb2.position.clone();
+        position2.z += 4;
+        raycaster.set(shootbomb2.position, direction.subVectors(shootbomb2.position, position2).normalize());
+        raycaster.far = far.subVectors(shootbomb2.position, position2).length();
+        intersects = raycaster.intersectObjects(meshArray2);
+        if (intersects.length > 0) {
+            console.log(intersects[0])
+            scorePlayer2 += 1000;
             hit2++;
             hit_sound.play();
-            setTimeout(() => {
-                shootbullet2 = false;
-                scene.remove(shootbomb2);
-            }, 1000);
-
-            shootbomb2.position.set(position2);
+            scene.remove(shootbomb2);
+            shootbomb2 = undefined;
         }
 
     }
+
+
+
+
+    if (coinsOBJ) {
+        coinsOBJ.rotateOnAxis(new THREE.Vector3(0, 1, 0), -rotateAngle * 2);
+    }
+
+    if (PowerObj) {
+        PowerObj.rotateOnAxis(new THREE.Vector3(0, 1, 0), -rotateAngle * 2);
+    }
+
 
     //Adjusting Camera According to Distance between Ships
     distance =finalship.position.distanceTo( finalship2.position );
@@ -524,29 +667,27 @@ function update() {
     updateSun();
 
     //Remove Bombs after it crosses the othe ship
-    if(shootbomb){
+    if (shootbomb) {
 
-        var distance2 = finalship.position.distanceTo( shootbomb.position );
-      
-        if(distance2 > distance+40)
-        {
+        var distance2 = finalship.position.distanceTo(shootbomb.position);
+
+        if (distance2 > distance + 40) {
             scene.remove(shootbomb);
             shootbomb = undefined;
         }
-    
-       
+
+
     }
-    
-    if(shootbomb2){
-        var distance3 = finalship2.position.distanceTo( shootbomb2.position );
+
+    if (shootbomb2) {
+        var distance3 = finalship2.position.distanceTo(shootbomb2.position);
         console.log(distance3);
-        if(distance3 > distance+40)
-        {
+        if (distance3 > distance + 40) {
             scene.remove(shootbomb2);
             shootbomb2 = undefined;
         }
-        
-        }
+
+    }
     
 
 }
@@ -560,171 +701,238 @@ function render() {
     pivotPoint2.position.set(finalship2.position.x, finalship2.position.y, finalship2.position.z)
     pivotPoint2.rotation.y += 0.01;
 
-     //Bullets finished
-     if(bulletover && bullet2over)
-     {
-         bulletover = false;
-         bullet2over = false;
-         bulletCount = 11;
-         bulletCount2 = 16;
-         bulletLeft = true;
-         bulletLeft2 = true;
-         $("#11").show();
-         $("#12").show();
-         $("#13").show();
-         $("#14").show();
-         $("#15").show();
-         $("#16").show();
-         $("#17").show();
-         $("#18").show();
-         $("#19").show();
-         $("#20").show();
-     }
 
-         //Adjusting Ship hits and Jerk of Ships(Ship1 to Ship2)
-         if(hit==1)
+        //Adjusting Ship hits and Jerk of Ships(Ship1 to Ship2)
+    if (hit == 1) {
+        $("#4").hide();
 
-{  
-    $("#4").hide();
- 
-    frames = frames+1;
-    if(frames <20){
+        frames = frames + 1;
+        if (frames < 20) {
 
-    ship2.rotation.y += 0.005;
-}
+            ship2.rotation.x += 0.005;
+        }
 
-else if(frames>=20&&frames<40){
-  
-    ship2.rotation.y -= 0.005;
-}
+        else if (frames >= 20 && frames < 40) {
 
-else if(frames>=40&&frames<80){
-  
-  ship2.rotation.y -= 0.005;
+            ship2.rotation.x -= 0.005;
+        }
 
-}
+        else if (frames >= 40 && frames < 80) {
 
-else if(frames>=80&&frames<120){
-  
-  ship2.rotation.y += 0.005;
+            ship2.rotation.x -= 0.005;
 
-}
+        }
 
-}
+        else if (frames >= 80 && frames < 120) {
+
+            ship2.rotation.x += 0.005;
+
+        }
+
+    }
 
 
-if(hit==2)
+    if (hit == 2) {
+        $("#5").hide();
 
-{
-    $("#5").hide();
-    
-    frames2 = frames2+1;
-    if(frames2 <40){
+        frames2 = frames2 + 1;
+        if (frames2 < 40) {
 
-    ship2.rotation.y += 0.005;
-   
-}
-else if(frames2>=40&&frames2<60){
-  
-    ship2.rotation.y -= 0.005;
-}
+            ship2.rotation.x += 0.005;
 
-else if(frames2>=60&&frames2<100){
-  
-  ship2.rotation.y -= 0.005;
+        }
+        else if (frames2 >= 40 && frames2 < 60) {
 
-}
-else if(frames2>=100&&frames2<140){
-  
-  ship2.rotation.y += 0.005;
+            ship2.rotation.x -= 0.005;
+        }
 
-}
+        else if (frames2 >= 60 && frames2 < 100) {
 
-}
+            ship2.rotation.x -= 0.005;
 
-if(hit == 3 ){
-    blast_sound.play();
-    bulletLeft2 = false;
-    localStorage["playerwin"]=ship.name;
-    $("#6").hide();
-    ship2.rotation.y += 0.01;
-    setTimeout(function(){
-        location.replace("scoreboard.html")
-    },5000)
+        }
+        else if (frames2 >= 100 && frames2 < 140) {
 
-   
-}
+            ship2.rotation.x += 0.005;
+
+        }
+
+    }
+
+    if (hit == 3) {
+        blast_sound.play();
+        bulletLeft2 = false;
+        $("#6").hide();
+        localStorage["playerwin"] = ship.name;
+        ship2.rotation.x += 0.01;
+        ship2.position.y -= 0.1;
+        setTimeout(function () {
+            location.replace("scoreboard.html")
+        }, 5000)
+
+
+    }
+
+
+
+
     //Adjusting Ship hits and Jerk of Ships(Ship2 to Ship1)
-    if(hit2==1)
+    if (hit2 == 1) {
+        $("#1").hide();
 
-    {  
-    $("#1").hide();
+        frames3 = frames3 + 1;
+        if (frames3 < 20) {
 
-    frames3 = frames3+1;
-    if(frames3 <20){
+            ship.rotation.x += 0.005;
 
-    ship.rotation.y += 0.005;
+        }
+        else if (frames3 >= 20 && frames3 < 40) {
 
-    }
-    else if(frames3>=20&&frames3<40){
+            ship.rotation.x -= 0.005;
+        }
 
-    ship.rotation.y -= 0.005;
-    }
+        else if (frames3 >= 40 && frames3 < 80) {
 
-    else if(frames3>=40&&frames3<80){
+            ship.rotation.x -= 0.005;
 
-    ship.rotation.y -= 0.005;
+        }
+        else if (frames3 >= 80 && frames3 < 120) {
 
-    }
-    else if(frames3>=80&&frames3<120){
+            ship.rotation.x += 0.005;
 
-    ship.rotation.y += 0.005;
-
-    }
+        }
 
     }
 
 
-    if(hit2==2)
+    if (hit2 == 2) {
+        $("#2").hide();
 
-    {
-    $("#2").hide();
+        frames4 = frames4 + 1;
+        if (frames4 < 40) {
 
-    frames4 = frames4+1;
-    if(frames4 <40){
+            ship.rotation.x += 0.005;
+            // ship2.rotation.y += -0.02;
+        }
+        else if (frames4 >= 40 && frames4 < 60) {
 
-    ship.rotation.y += 0.005;
-    // ship2.rotation.y += -0.02;
-    }
-    else if(frames4>=40&&frames4<60){
+            ship.rotation.x -= 0.005;
+        }
 
-    ship.rotation.y -= 0.005;
-    }
+        else if (frames4 >= 60 && frames4 < 100) {
 
-    else if(frames4>=60&&frames4<100){
+            ship.rotation.x -= 0.005;
 
-    ship.rotation.y -= 0.005;
+        }
+        else if (frames4 >= 100 && frames4 < 140) {
 
-    }
-    else if(frames4>=100&&frames4<140){
+            ship.rotation.x += 0.005;
 
-    ship.rotation.y += 0.005;
-
-    }
+        }
 
     }
 
-    if(hit2 ==3){
+    if (hit2 == 3) {
         bulletLeft = false;
         blast_sound.play();
-        localStorage["playerwin"]=ship2.name;
-    $("#3").hide();
-    ship.rotation.y += 0.01;
-    setTimeout(function(){
-                    location.replace("scoreboard.html")
-                },5000)
+        localStorage["playerwin"] = ship2.name;
+        $("#3").hide();
+        ship.rotation.x += 0.01;
+        ship.position.y -= 0.1;
+        setTimeout(function () {
+            location.replace("scoreboard.html")
+        }, 5000)
     }
 
+
+    switch (NoOfBulletPlayer1) {
+        case 1: $("#11").show();
+            $("#12").hide();
+            $("#13").hide();
+            $("#14").hide();
+            $("#15").hide();
+            break;
+
+        case 2: $("#11").show();
+            $("#12").show();
+            $("#13").hide();
+            $("#14").hide();
+            $("#15").hide();
+            break;
+        case 3: $("#11").show();
+            $("#12").show();
+            $("#13").show();
+            $("#14").hide();
+            $("#15").hide();
+            break;
+
+        case 4: $("#11").show();
+            $("#12").show();
+            $("#13").show();
+            $("#14").show();
+            $("#15").hide();
+            break;
+
+        case 5: $("#11").show();
+            $("#12").show();
+            $("#13").show();
+            $("#14").show();
+            $("#15").show();
+            break;
+
+        default: $("#11").hide();
+            $("#12").hide();
+            $("#13").hide();
+            $("#14").hide();
+            $("#15").hide();
+
+    }
+
+    switch (NoOfBulletPlayer2) {
+        case 1: $("#16").show();
+            $("#17").hide();
+            $("#18").hide();
+            $("#19").hide();
+            $("#20").hide();
+            break;
+
+        case 2: $("#16").show();
+            $("#17").show();
+            $("#18").hide();
+            $("#19").hide();
+            $("#20").hide();
+            break;
+        case 3: $("#16").show();
+            $("#17").show();
+            $("#18").show();
+            $("#19").hide();
+            $("#20").hide();
+            break;
+
+        case 4: $("#16").show();
+            $("#17").show();
+            $("#18").show();
+            $("#19").show();
+            $("#20").hide();
+            break;
+
+        case 5: $("#16").show();
+            $("#17").show();
+            $("#18").show();
+            $("#19").show();
+            $("#20").show();
+            break;
+
+        default: $("#16").hide();
+            $("#17").hide();
+            $("#18").hide();
+            $("#19").hide();
+            $("#20").hide();
+            break;
+    }
+
+    $('#player1coin').text(scorePlayer1);
+    $('#player2coin').text(scorePlayer2);
 
     //Water effect
     time = performance.now() * 0.001;
@@ -738,6 +946,56 @@ function animate() {
     requestAnimationFrame(animate);
     render();
     update();
+}
+
+
+
+function addPowerBox() {
+    setTimeout(() => {
+        Power_Box = POWER_BOX.clone();
+        PowerObj = master_shootbomb.clone();
+        Power_Box.position.set(getRndInteger(-100, 100), 2, getRndInteger(0, -100));
+        PowerObj.position.set(Power_Box.position.x, 10, Power_Box.position.z)
+        scene.add(Power_Box);
+        scene.add(PowerObj);
+
+        setTimeout(() => {
+            scene.remove(Power_Box);
+            scene.remove(PowerObj)
+            Power_Box = undefined;
+            PowerObj = undefined;
+            addPowerBox();
+        }, 10000);
+    }, 30000);
+}
+
+
+
+
+
+
+
+function addCoins() {
+    setTimeout(() => {
+        coins = COINS.clone();
+        coinsOBJ = TRESURE_BOX.clone();
+        coins.position.set(getRndInteger(-100, 100), 4, getRndInteger(0, -100));
+        coinsOBJ.position.set(coins.position.x, coins.position.y, coins.position.z)
+        scene.add(coins);
+        scene.add(coinsOBJ)
+        console.log("coins Added");
+        setTimeout(() => {
+            scene.remove(coinsOBJ);
+            coinsOBJ = undefined;
+            scene.remove(coins);
+            coins = undefined;
+            addCoins();
+        }, 30000);
+    }, 10000);
+}
+
+function getRndInteger(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min;
 }
 
 //Game Calling
